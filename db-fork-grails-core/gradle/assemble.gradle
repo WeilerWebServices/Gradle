@@ -1,0 +1,216 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: org.grails.gradle.GrailsBuildPlugin
+
+def libsConfigurations = []
+subprojects { subproject ->
+    if(subproject.name == 'grails-dependencies') return
+    if(subproject.name == 'grails-bom') return
+    if(subproject.name == 'grails-shell' || subproject.name == 'grails-core') {
+
+        configurations {
+            libsConfigurations << libs {
+                extendsFrom compile, runtime
+                ["jsp21", "uaa"].collect { configurations.findByName(it) }.findAll { it != null }.each { extendsFrom it }
+            }
+        }
+    }
+}
+
+task checkDuplicateDependencies(description: 'Checks the dependency graph for multiple versions of the same dependency',
+                                dependsOn: libsConfigurations) {
+    doLast {
+/*
+    def moduleToVersionsMap = [:]
+    libsConfigurations.each { configuration ->
+        configuration.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+            def dependency = artifact.resolvedDependency
+
+            def key = "${dependency.moduleGroup}/${dependency.moduleName}".toString()
+            def value = dependency.moduleVersion
+
+            def versions = moduleToVersionsMap[key]
+            if (!versions) {
+                versions = [] as Set
+                moduleToVersionsMap[key] = versions
+            }
+            versions << value
+        }
+    }
+    def dups = moduleToVersionsMap.findAll { k, v ->
+        v.size() > 1
+    }
+    if (dups) {
+        def msg = 'Multiple versions of some dependencies have been identified in the dependency graph'
+        println msg
+        dups.each { k, v ->
+            println "Dependency: ${k}, Versions: $v"
+        }
+        throw new GradleException(msg)
+    }
+*/
+    }
+}
+
+task configurePopulateDependencies {
+    ext {
+        baseCachesDir = "$gradle.gradleUserHomeDir/caches"
+        cacheDir = "$baseCachesDir/modules-2"
+        metadata = "$cacheDir/metadata-2.1/descriptors"
+    }
+    doLast {
+        def projectNames = rootProject.subprojects*.name
+
+        def seen = []
+        libsConfigurations.each { configuration ->
+            def sourceArtifacts = sourcesFor(configuration).resolvedConfiguration.lenientConfiguration.getArtifacts(Specs.satisfyAll()).groupBy {
+                it.moduleVersion.id
+            }
+            def javadocArtifacts = javadocFor(configuration).resolvedConfiguration.lenientConfiguration.getArtifacts(Specs.satisfyAll()).groupBy {
+                it.moduleVersion.id
+            }
+            def pomArtifacts = pomFor(configuration).resolvedConfiguration.lenientConfiguration.getArtifacts(Specs.satisfyAll()).groupBy {
+                it.moduleVersion.id
+            }
+
+            for (artifact in configuration.resolvedConfiguration.resolvedArtifacts) {
+                if (artifact in seen) continue
+                seen << artifact
+                def dependency = artifact.moduleVersion.id
+                if (!projectNames.contains(dependency.name)) {
+                    populateDependencies.into("$dependency.group/$dependency.name/jars") {
+                        from artifact.file // this will trigger the actual download if necessary
+                        def sourceJar = sourceArtifacts[dependency]
+                        if (sourceJar) {
+                            from sourceJar.file
+                        }
+                        def javadocJar = javadocArtifacts[dependency]
+                        if (javadocJar) {
+                            from javadocJar.file
+                        }
+                    }
+
+                    populateDependencies.into("$dependency.group/$dependency.name/jars") {
+                        from artifact.file // this will trigger the actual download if necessary
+                        def sourceJar = sourceArtifacts[dependency]
+                        if (sourceJar) {
+                            from sourceJar.file
+                        }
+                        def javadocJar = javadocArtifacts[dependency]
+                        if (javadocJar) {
+                            from javadocJar.file
+                        }
+                    }
+
+                    populateDependencies.into("$dependency.group/$dependency.name") {
+                        def pomFile = pomArtifacts[dependency]
+                        if (pomFile) {
+                            from pomFile.file
+                        }
+                    }
+
+                    populateDependencies.from("${metadata}/${dependency.group}/${dependency.name}/${dependency.version}") {
+                        include "**/*ivy.xml"
+                        eachFile { it.path = "$dependency.group/$dependency.name/ivy-${dependency.version}.xml" }
+                    }
+                }
+            }
+        }
+    }
+}
+
+task populateDependencies(type: Sync, dependsOn: configurePopulateDependencies) {
+    into homeLibDir
+    includeEmptyDirs = false
+}
+
+// Can't use sync task here because this directory contains other things as well.
+task sourcesJars(type: Sync) {
+    into homeSrcDir
+    from subprojects.findAll { !it.name.startsWith('grails-test-suite') && !it.name.startsWith('grails-dependencies') && !it.name.startsWith('grails-bom') }.sourcesJar*.outputs*.files
+
+    // sourcesFor comes from GrailsBuildPlugin
+    from { sourcesFor(libsConfigurations*.copyRecursive { it.name.startsWith('grails-datastore') }.collect { it.transitive = false; it }) }
+}
+
+task grailsCreateStartScripts(type: GrailsCreateStartScripts) {
+    description = "Creates OS specific scripts to run grails-shell as a JVM application."
+    mainClassName = 'org.grails.cli.GrailsCli'
+    applicationName = 'grails'
+    defaultJvmOpts = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
+    outputDir = file('bin')
+    classpath = rootProject.childProjects['grails-shell'].configurations.runtime
+    projectArtifacts = rootProject.childProjects['grails-shell'].tasks['jar'].outputs.files.collect { "dist/${it.name}" }
+    doLast {
+        ant.replace(file: file('bin/grails'), token: 'media/gradle.icns', value: 'media/icons/grails.icns')
+        ant.chmod(file: file('bin/grails'), perm: 'ugo+rx')
+    }
+}
+
+class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateStartScripts {
+    Collection<String> projectArtifacts=[]
+
+    @org.gradle.api.tasks.TaskAction
+    void generate() {
+        def generator = new org.gradle.api.internal.plugins.StartScriptGenerator()
+        generator.unixStartScriptGenerator.template = project.rootProject.childProjects['grails-shell'].resources.text.fromFile('src/main/resources/unixStartScript.txt')
+        generator.applicationName = getApplicationName()
+        generator.mainClassName = getMainClassName()
+        generator.defaultJvmOpts = getDefaultJvmOpts()
+        generator.optsEnvironmentVar = getOptsEnvironmentVar()
+        generator.exitEnvironmentVar = getExitEnvironmentVar()
+        generator.classpath = projectArtifacts + getClasspath().resolvedConfiguration.resolvedArtifacts.collect { artifact ->
+            def dependency = artifact.moduleVersion.id
+            String installedFile = "lib/$dependency.group/$dependency.name/jars/$artifact.file.name"
+            if(dependency.group=='org.grails' && !project.file(installedFile).exists()) {
+                installedFile = "dist/$artifact.file.name"
+            }
+            installedFile
+        }
+        generator.scriptRelPath = "bin/${getUnixScript().name}"
+        generator.generateUnixScript(getUnixScript())
+        generator.generateWindowsScript(getWindowsScript())
+    }
+}
+
+task install(dependsOn: [populateDependencies, grailsCreateStartScripts]) { task ->
+    subprojects { Project project ->
+        if(!project.name.startsWith('grails-test-suite')) {
+            task.dependsOn("$project.name:publishToMavenLocal")
+        }
+    }
+}
+//task install(dependsOn: [populateDependencies, grailsCreateStartScripts] + subprojects.findAll { !it.name.startsWith('grails-test-suite') }
+//                                                                                                        *.collect { Project p -> p.tasks.withType(PublishToMavenLocal)})
+
+task zipDist(type: Zip, dependsOn: [sourcesJars, install]) {
+    destinationDir = "${buildDir}/distributions" as File
+    baseName = 'grails'
+    appendix = grailsVersion
+
+    exclude "**/CVS/**"
+
+    into("grails-$grailsVersion") {
+        from(projectDir) {
+            include 'bin/grails', 'bin/grails.bat', 'lib/', 'media/', 'samples/', 'scripts/', 'LICENSE', 'INSTALL', "src/"
+            exclude 'ant/bin', 'src/grails', 'src/war'
+        }
+        from(docs.destinationDir) {
+            into "doc"
+        }
+        from("conf") {
+            into "conf"
+        }
+        from(homeDistDir) {
+            into "dist"
+            exclude "*.zip"
+        }
+    }
+}
+
+/*task zipDoc(type: Zip) {
+    appendix = 'docs'
+    from docs.destinationDir
+}*/
+
+task assemble(dependsOn: zipDist)

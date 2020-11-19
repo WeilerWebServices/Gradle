@@ -1,0 +1,52 @@
+:revnumber: {project-version}
+:example-caption!:
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../../../demos]
+:navigation:
+:menu:
+:status:
+:title-slide-background-image: title.png
+:title-slide-transition: zoom
+:title-slide-transition-speed: fast
+:icons: font
+
+= : Dependency Management with Gradle
+
++++<h3>+++
+Publishing and release strategies
++++<div style="font-size: 0.5em; padding-top:60px">+++
+Cédric Champeau (@CedricChampeau) & 
+Louis Jacomet (@ljacomet) - Gradle Inc.
++++</div>+++
++++</h3>+++
+
+== Who are we?
+
+image::who-s-who.png[height=250,width=520]
+
+Dependency management team
+
+== Agenda
+
+* Publishing basics
+* Customizing publications
+* The Gradle component model
+* Published metadata
+* Versioning
+
+include::chapters/00-intro.adoc[]
+
+include::chapters/01-customizing.adoc[]
+
+include::chapters/02-component-model.adoc[]
+
+include::chapters/03-about-metadata.adoc[]
+
+include::chapters/04-strategies.adoc[]
+
+include::chapters/05-conclusion.adoc[]
+
+[%notitle]
+== Thank you
+
+image::thank-you.png[background, size=cover]

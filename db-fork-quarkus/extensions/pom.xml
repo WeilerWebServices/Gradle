@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2019 Red Hat, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>quarkus-build-parent</artifactId>
+        <groupId>io.quarkus</groupId>
+        <version>999-SNAPSHOT</version>
+        <relativePath>../build-parent/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>quarkus-extensions-parent</artifactId>
+    <name>Quarkus - Extensions - Parent pom</name>
+    <packaging>pom</packaging>
+    <modules>
+        <!-- Plumbing -->
+        <module>arc</module>
+        <module>scheduler</module>
+
+        <!-- Formats -->
+        <module>jaxb</module>
+        <module>jsonp</module>
+        <module>jsonb</module>
+
+        <!-- HTTP -->
+        <module>undertow</module>
+        <module>undertow-websockets</module>
+
+        <!-- Monitoring -->
+        <module>smallrye-health</module>
+        <module>smallrye-metrics</module>
+        <module>smallrye-opentracing</module>
+        <module>smallrye-fault-tolerance</module>
+        <module>jaeger</module>
+
+        <!-- REST services -->
+        <module>resteasy-common</module>
+        <module>resteasy</module>
+        <module>resteasy-jsonb</module>
+        <module>smallrye-rest-client</module>
+        <module>smallrye-openapi</module>
+
+        <!-- Reactive -->
+        <module>vertx</module>
+        <module>vertx-web</module>
+        <module>netty</module>
+        <module>reactive-streams-operators</module>
+        <module>smallrye-reactive-messaging</module>
+        <module>smallrye-reactive-messaging-kafka</module>
+
+        <!-- Data access and validation -->
+        <module>narayana-jta</module>
+        <module>agroal</module>
+        <module>jdbc</module>
+        <module>hibernate-orm</module>
+        <module>hibernate-validator</module>
+        <module>panache</module>
+        <module>kafka-client</module>
+
+        <!-- Spring -->
+        <module>spring-di</module>
+
+        <!-- Security -->
+        <module>elytron-security</module>
+        <module>smallrye-jwt</module>
+
+        <!-- Infinispan -->
+        <module>infinispan-client</module>
+
+        <!-- Caching -->
+        <module>caffeine</module>
+
+        <!-- Integrations -->
+        <module>amazon-lambda</module>
+
+        <!-- Camel -->
+        <module>camel</module>
+
+        <!-- Additional languages -->
+        <module>kotlin</module>
+    </modules>
+
+</project>

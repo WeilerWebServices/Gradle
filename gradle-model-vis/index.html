@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="vis">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap-3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+
+    <script src="lib/d3.v3.js"></script>
+    <script src="lib/sugar-1.4.1.min.js"></script>
+    <script src="lib/jquery-2.2.0.min.js"></script>
+    <script src="lib/angular-1.5.0.min.js"></script>
+</head>
+<body ng-controller="MainController">
+    <div class="controls input-group" style="float: left;">
+        <div class="input-group-btn">
+            <button class="btn btn-default" ng-click="stepTime(-1)">
+                <span class="glyphicon glyphicon-step-backward"></span>
+            </button>
+        </div>
+        <div class="form-control">
+            <input type="range" min="0" max="{{steps.length}}" ng-model="time" ng-enabled="steps.length" />
+        </div>
+        <div class="input-group-btn">
+            <button class="btn btn-default" ng-click="stepTime(1)">
+                <span class="glyphicon glyphicon-step-forward"></span>
+            </button>
+            <button class="btn btn-default" ng-click="playing = !playing">
+                <span ng-if="playing" class="glyphicon glyphicon-pause"></span>
+                <span ng-if="!playing" class="glyphicon glyphicon-play"></span>
+            </button>
+        </div>
+    </div>
+    <div class="step input-group" style="float: left;">
+        <input class="form-control" ng-model="time" ng-enabled="steps.length" />
+        <span class="input-group-addon">of {{steps.length}}</span>
+    </div>
+    <div class="description input-group" style="float: left;">
+        <input class="form-control" ng-model="steps[time - 1].description" readonly="true" />
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">
+            <input type="checkbox" ng-model="showHidden" />
+        </span>
+        <label class="form-control">Show hidden</label>
+    </div>
+
+    <div class="content">
+        <svg id="canvas"/>
+        <table class="legend">
+            <tbody>
+                <tr ng-repeat="state in states">
+                    <td>
+                        <svg width="16" height="16">
+                            <circle class="{{state}}" r="7" cx="8" cy="8" />
+                        </svg>
+                    </td>
+                    <td class="count">
+                        <span>{{steps[time - 1].stateCounts[state] || 0}}</span>
+                    </td>
+                    <td>
+                        <span>{{state}}</span>
+                    </td>
+                </tr>
+                <tr class="sumRow">
+                    <td></td>
+                    <td class="count">
+                        <span>{{count(time - 1)}}</span>
+                    </td>
+                    <td>
+                        <span>Sum</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="js/tree-layout.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+apply plugin: 'com.android.library'
+dependencies {
+    annotationProcessor deps.apt.daggerCompiler
+
+    compile project(':outissue:extended')
+    compile deps.apt.javaxInject
+    compile deps.support.annotations
+    compile deps.other.rxlifecycle
+    compile deps.other.rxrelay
+    compile deps.other.dagger
+    compile deps.other.autoValueGson
+
+    compile deps.external.dagger
+
+    testCompile deps.other.leanback
+}

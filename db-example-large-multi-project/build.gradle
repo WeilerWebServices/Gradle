@@ -1,0 +1,8 @@
+plugins {
+    id("com.gradle.build-scan") version "2.1"
+}
+
+buildScan {
+    server = System.getenv("GE_URL")
+    publishAlways()
+}

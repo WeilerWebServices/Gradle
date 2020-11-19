@@ -1,0 +1,34 @@
+FILE: simpleClass.kt
+    public? final? interface SomeInterface {
+        public? final? fun foo(x: Int, y: String): String
+
+        public? final? val bar: Boolean
+            public? get(): Boolean
+
+    }
+    public? final? class SomeClass : SomeInterface, kotlin/Any {
+        public? constructor(): super<kotlin/Any>()
+
+        private final? val baz: <implicit> = Int(42)
+            private get(): <implicit>
+
+        public? open? override fun foo(x: Int, y: String): String {
+            ^foo plus#(plus#(y#, x#), baz#)
+        }
+
+        public? open? override var bar: Boolean
+            public? get(): Boolean {
+                ^ Boolean(true)
+            }
+            public? set(value: Boolean): kotlin/Unit {
+            }
+
+        public? final? lateinit var fau: Double
+            public? get(): Double
+            public? set(value: Double): kotlin/Unit
+
+    }
+    public? final? inline class InlineClass : kotlin/Any {
+        public? constructor(): super<kotlin/Any>()
+
+    }

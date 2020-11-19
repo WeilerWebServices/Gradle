@@ -1,0 +1,14 @@
+// Make sure we are testing the local cache
+gradle.settingsEvaluated { settings ->
+    settings.buildCache {
+        local(DirectoryBuildCache) {
+            enabled = true
+            push = true
+            // Use local cache from its default location
+            directory = null
+        }
+        remote {
+            enabled = false
+        }
+    }
+}

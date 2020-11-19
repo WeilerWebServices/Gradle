@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.pegdown:pegdown:1.1.0"
+    }
+}
+
+task markdown(type: Markdown) {
+    markdown file("src/some.md")
+    html file("$buildDir/some.html")
+    encoding "utf8"
+}
+
+import org.pegdown.PegDownProcessor
+
+class Markdown extends DefaultTask {
+    @InputFile File markdown
+    @OutputFile File html
+    
+    @Input String encoding
+    
+    @TaskAction
+    void markdown() {
+        PegDownProcessor processor = new PegDownProcessor()
+        String markdownText = markdown.getText(encoding)
+        String htmlText = processor.markdownToHtml(markdownText)
+
+        html.write(htmlText, encoding)
+    }
+}

@@ -1,0 +1,20 @@
+// Currently cannot use the plugins { } block to reference plugins in included builds
+// Use the buildscript { } block instead
+buildscript {
+    dependencies {
+        classpath "org.gradle.samples:build-wrapper:1.0"
+    }
+}
+plugins {
+    id 'xcode'
+}
+
+// Apply the cmake-library plugin explicitly as we can't use the plugins { } block
+apply plugin: 'org.gradle.samples.cmake-library'
+
+group = "org.gradle.cpp-samples"
+
+cmake {
+    binary = "liblist.a"
+    includeDirectory = layout.projectDirectory.dir("src/list/include")
+}

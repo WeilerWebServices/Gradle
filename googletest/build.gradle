@@ -1,0 +1,37 @@
+plugins {
+    id 'cpp-library'
+    id 'maven-publish'
+}
+
+group = 'org.gradle.cpp-samples'
+version = '1.9.0-gr4-SNAPSHOT'
+
+library {
+    targetMachines = [
+        machines.windows.x86_64,
+        machines.linux.x86_64,
+        machines.macOS.x86_64
+    ]
+    source.from file('googletest/src/gtest-all.cc')
+    publicHeaders.from file('googletest/include')
+    privateHeaders.from file('googletest')
+}
+
+tasks.withType(CppCompile) {
+    macros.put("GTEST_CREATE_SHARED_LIBRARY", '1')
+}
+
+publishing {
+    repositories {
+        maven {
+            url = 'https://repo.gradle.org/gradle/libs-snapshots-local'
+            if (project.hasProperty("gartifactoryUsername") 
+                && project.hasProperty("gartifactoryPassword")) {
+                credentials {
+                    username = gartifactoryUsername
+                    password = gartifactoryPassword
+                }
+            }
+        }
+    }
+}

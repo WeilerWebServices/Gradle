@@ -1,0 +1,31 @@
+allprojects {
+    apply plugin: "xcode"
+    apply plugin: "visual-studio"
+    apply plugin: "maven-publish"
+
+    group = 'org.gradle.cpp-samples'
+    version = '1.2'
+
+    publishing {
+        repositories {
+            maven {
+                url = '../../repo'
+            }
+        }
+    }
+
+    tasks.register("assembleDebuggable") {
+        group = "Build"
+        description = "Assemble all debuggable C++ binaries."
+        components.withType(CppExecutable) { binary ->
+            if (binary.isDebuggable()) {
+               dependsOn binary.executableFile
+            }
+        }
+        components.withType(CppSharedLibrary) { binary ->
+            if (binary.isDebuggable()) {
+               dependsOn binary.linkFile
+            }
+        }
+    }
+}

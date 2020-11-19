@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+dependencies {
+    compile project(':outissue:extended')
+    compile project(':outissue:carnally')
+    compile deps.other.location
+    compile deps.other.locationServiceGoogle
+    compile deps.other.rebound
+
+    compile deps.other.javapoet
+
+    testCompile deps.other.leanback
+}

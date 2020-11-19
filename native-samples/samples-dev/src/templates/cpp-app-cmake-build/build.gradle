@@ -1,0 +1,23 @@
+import org.gradle.samples.tasks.CMake
+
+// Currently cannot use the plugins { } block to reference plugins in included builds
+// Use the buildscript { } block instead
+buildscript {
+    dependencies {
+        classpath "org.gradle.samples:build-wrapper:1.0"
+    }
+}
+plugins {
+    id 'xcode'
+}
+
+// Apply the cmake-application plugin explicitly as we can't use the plugins { } block
+apply plugin: 'org.gradle.samples.cmake-application'
+
+dependencies {
+    implementation 'org.gradle.cpp-samples:utilities:1.0'
+}
+
+tasks.withType(CMake).configureEach {
+    includeDirs.from layout.projectDirectory.dir("src/app/include")
+}

@@ -1,0 +1,30 @@
+buildscript {
+    dependencies {
+        def measurementPluginJar = project.hasProperty('measurementPluginJar') ? project.property('measurementPluginJar') : null
+        if(measurementPluginJar) {
+            classpath files(measurementPluginJar)
+        }
+    }
+}
+
+def measurementPluginEnabled = project.hasProperty('measurementPluginJar')
+if(measurementPluginEnabled) {
+    apply plugin: org.gradle.performance.plugin.MeasurementPlugin
+}
+
+apply plugin: 'cpp'
+
+subprojects {
+    model {
+        binaries {
+            withType(NativeBinarySpec) {
+                cppCompiler.define('SOME_MACRO', 'some_value')
+            }
+        }
+    }
+}
+
+if(measurementPluginEnabled) {
+    org.gradle.performance.plugin.BuildEventTimeStamps.settingsEvaluated()
+}
+

@@ -1,0 +1,10 @@
+apply plugin: 'com.android.library'
+dependencies {
+    compile project(':outissue:caricetum:midship')
+
+    compile deps.other.geo
+    compile project(':outissue:nutate')
+    compile project(':outissue:browntail')
+
+    testCompile project(':outissue:cyclus')
+}

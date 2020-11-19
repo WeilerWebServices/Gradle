@@ -1,0 +1,3 @@
+<plugin name='codecs'>
+  <type>org.grails.plugins.codecs.CodecsGrailsPlugin</type>
+</plugin>

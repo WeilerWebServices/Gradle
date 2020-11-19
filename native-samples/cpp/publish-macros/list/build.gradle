@@ -1,0 +1,10 @@
+import org.gradle.samples.tasks.GeneratePublicMacrosManifest
+
+plugins {
+    id "cpp-library"
+    id "org.gradle.samples.cpp-public-macros" version "1.0"
+}
+
+tasks.withType(GeneratePublicMacrosManifest).configureEach {
+    macros = [macro("FOO", "BAR"), macro("FOOBAR")]
+}

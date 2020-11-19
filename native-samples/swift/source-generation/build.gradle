@@ -1,0 +1,34 @@
+plugins {
+    id 'swift-application'
+    id 'xcode'
+}
+
+def codeGeneration = tasks.register("codeGeneration", CodeGenerator) {
+    generatedDir = project.layout.buildDirectory.dir("generated/swift")
+}
+
+application {
+    source.from codeGeneration.flatMap { it.generatedDir }
+}
+
+// Code generation implementation could be in another plugin or buildSrc
+class CodeGenerator extends DefaultTask {
+    @OutputDirectory
+    DirectoryProperty generatedDir = project.objects.directoryProperty()
+
+    @TaskAction
+    public void generate() {
+        generateSources(generatedDir.getAsFile().get())
+    }
+
+    private void generateSources(File generatedDir) {
+        new File(generatedDir, "main.swift").text = """
+internal func getMessage() -> String {
+    return "Hello, World!"
+}
+
+// Simple hello world app
+print(getMessage())
+        """
+    }
+}

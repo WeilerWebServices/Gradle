@@ -1,0 +1,35 @@
+import org.gradle.internal.os.OperatingSystem
+
+plugins {
+    id 'swift-application'
+    id 'xctest'
+    id 'xcode'
+}
+
+def libDebugImportPath = file('../simple-library/build/modules/main/debug/List.swiftmodule')
+def libReleaseImportPath = file('../simple-library/build/modules/main/release/List.swiftmodule')
+
+def libDebugLib = file(OperatingSystem.current().getSharedLibraryName('../simple-library/build/lib/main/debug/List'))
+def libReleaseLib = file(OperatingSystem.current().getSharedLibraryName('../simple-library/build/lib/main/release/List'))
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (!taskGraph.hasTask(":help")) {
+        if (!libDebugLib.exists() || !libReleaseLib.exists() || !libDebugImportPath.exists() || !libReleaseImportPath.exists()) {
+            throw new GradleException("Please build project at ${file('../simple-library')} using './gradlew -p ../simple-library assembleRelease assembleDebug'")
+        }
+    }
+}
+
+components.withType(SwiftBinary) { binary ->
+    project.dependencies {
+        if (binary.optimized) {
+            add(binary.importPathConfiguration.name, files(libReleaseImportPath))
+            add(binary.linkLibraries.name, files(libReleaseLib))
+            add(binary.runtimeLibraries.name, files(libReleaseLib))
+        } else {
+            add(binary.importPathConfiguration.name, files(libDebugImportPath))
+            add(binary.linkLibraries.name, files(libDebugLib))
+            add(binary.runtimeLibraries.name, files(libDebugLib))
+        }
+    }
+}

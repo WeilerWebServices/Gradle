@@ -1,0 +1,306 @@
+[background-color="#01303a"]
+== The component model
+
+=== The component model
+
+[plantuml, height=500]
+....
+@startuml
+
+skinparam object {
+	BackgroundColor AntiqueWhite
+	ArrowColor SeaGreen
+	BorderColor Black
+    BackgroundColor<<Variants>> LightCyan
+    BorderColor<<Variants>> LightBlue
+
+    BackgroundColor<<Dependencies>> DarkSalmon
+    BorderColor<<Dependencies>> DarkRed
+
+    BackgroundColor<<Artifacts>> Thistle
+    BorderColor<<Artifacts>> Tomato
+
+}
+
+object Project
+object "Components" as Component
+
+object Variants <<Variants>>
+
+package "Variant 1" {
+
+   object "Dependencies" as Dependencies1 <<Dependencies>>
+   object "Artifacts" as Artifacts1 <<Artifacts>>
+   object Dependency1 <<Dependencies>>
+   object Dependency2 <<Dependencies>>
+   object Artifact1 <<Artifacts>>
+}
+
+package "Variant 2" {
+    object "Dependencies" as Dependencies2 <<Dependencies>>
+    object "Artifacts" as Artifacts2 <<Artifacts>>
+    object Artifact2 <<Artifacts>>
+    object Artifact3 <<Artifacts>>
+    object Artifact4 <<Artifacts>>
+    object Dependency3 <<Dependencies>>
+}
+
+Project *-- "n" Component : declares
+Component *-- "n" Variants : has
+Variants --> Artifacts1
+Variants --> Dependencies2
+
+Dependencies1 --> Dependency1
+Dependencies1 --> Dependency2
+Artifacts1 --> Artifact1
+
+
+Dependencies2 --> Dependency3
+Artifacts2 --> Artifact2
+Artifacts2 --> Artifact3
+Artifacts2 --> Artifact4
+
+@enduml
+....
+
+=== Java component
+
+```kotlin
+from(components["java"])
+```
+
+[plantuml, width=600, height=500]
+....
+@startuml
+
+skinparam object {
+	BackgroundColor AntiqueWhite
+	ArrowColor SeaGreen
+	BorderColor Black
+    BackgroundColor<<Variants>> LightCyan
+    BorderColor<<Variants>> LightBlue
+
+    BackgroundColor<<Dependencies>> DarkSalmon
+    BorderColor<<Dependencies>> DarkRed
+
+    BackgroundColor<<Artifacts>> Thistle
+    BorderColor<<Artifacts>> Tomato
+
+}
+
+object Project
+object "components.java" as Component
+
+object Variants <<Variants>>
+
+package "apiElements" {
+
+   object "Dependencies" as Dependencies1 <<Dependencies>>
+   object "Artifacts" as Artifacts1 <<Artifacts>>
+   object "slf4j-api:1.7.5" as Dependency2 <<Dependencies>>
+   object "mylib.jar" as Artifact1 <<Artifacts>>
+}
+
+package "runtimeElements" {
+    object "Dependencies" as Dependencies2 <<Dependencies>>
+    object "Artifacts" as Artifacts2 <<Artifacts>>
+    object "mylib.jar" as Artifact2 <<Artifacts>>
+    object "commons-lang:3.4" as Dependency11 <<Dependencies>>
+    object "slf4j-api:1.7.5" as Dependency22 <<Dependencies>>
+}
+
+Project *-- Component : declares
+Component *-- "n" Variants : has
+Variants --> Artifacts1
+Variants --> Dependencies2
+
+Dependencies1 --> Dependency2
+Artifacts1 --> Artifact1
+
+
+Dependencies2 --> Dependency11
+Dependencies2 --> Dependency22
+Artifacts2 --> Artifact2
+
+@enduml
+....
+
+=== The component model
+
+Creates _safe boundaries_ between projects
+
+Ground for the publication model
+
+* Artifacts are attached to _configurations_
+* which are exposed as _variants_
+* which belong to a _component_
+
+[%notitle]
+=== Sharing task outputs between projects
+
+"“How do I share the output of a task between subprojects?”"
+-- Many Gradle users
+
+=== Sharing task outputs
+
+* Classic (but wrong) answer:
+
+```
+project(":subproject").tasks.getByName("someTask")
+```
+
+
+* Unsafe
+* Poorly modeled
+
+[background-color="#01303a"]
+=== Safe cross-project publications demo
+
+=== Cross-project publications
+
+* Producer: create an _outgoing_ configuration
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/producer/build-step1.gradle.kts[tags=declare-outgoing-configuration]
+----
+
+=== Cross-project publications
+
+* Producer: attach the artifact to the outgoing configuration
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/producer/build-step1.gradle.kts[tags=attach-artifact]
+----
+
+=== Cross-project publications
+
+* Consumer: declare a _resolvable_ configuration
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/consumer/build-step1.gradle.kts[tags=resolvable-configuration]
+----
+
+=== Cross-project publications
+
+* Consumer: declaring a dependency on the configuration
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/consumer/build-step1.gradle.kts[tags=explicit-configuration-dependency]
+----
+
+=== Cross-project publications: model improvement
+
+* Let's improve modeling on the producer side
+* Producer:
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/producer/build-step2.gradle.kts[tags=plugins,indent=0]
+----
+
+=== Cross-project publications: model improvement
+
+* Moved logic to `buildSrc`
+* Declaration of _attributes_
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/buildSrc/src/main/kotlin/com/acme/InstrumentedJarsPluginV2.kt[tags=create_outgoing_configuration,indent=0]
+----
+
+=== Cross-project publications: model improvement
+
+* Consumer: may now use _regular_ dependency declarations
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/consumer/build-step2.gradle.kts[tags=dependencies,indent=0]
+----
+
+=== Cross-project publications: model improvement
+
+* Consumer: asks for a _different_ variant for test runtime
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/consumer/build-step2.gradle.kts[tags=ask-for-instrumented-classes,indent=0]
+----
+
+=== Cross-project publications: model improvement
+
+* Consumer: now compile classpath and test runtime classpath use different _variants_
+
+```
+> Task :consumer:resolveInstrumentedClasses
+[/producer/build/classes/java/main, junit-4.12.jar, hamcrest-core-1.3.jar]
+[producer-instrumented.jar, junit-4.12.jar, hamcrest-core-1.3.jar]
+```
+
+=== Enriching existing components
+
+* Producer can add variants to existing components
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/buildSrc/src/main/kotlin/com/acme/InstrumentedJarsPluginV3.kt[tags=add_variant_to_existing_component]
+----
+
+=== Creating adhoc components
+
+* Or producer can create a full adhoc component
+
+[source,kotlin]
+----
+include::../{sourcedir}/cross-project-publications/buildSrc/src/main/kotlin/com/acme/InstrumentedJarsPluginV3.kt[tags=create_adhoc_component,indent=0]
+----
+
+[background-color="#01303a"]
+=== Deeper control of publications
+
+=== Filtering out variants for publication
+
+* Sometimes you don't need to publish all variants for external consumption
+* Example: test fixtures can be used _between projects_ but shouldn't be available from external contributors
+
+```kotlin
+val javaComponent = components["java"] as AdhocComponentWithVariants
+javaComponent.withVariantsFromConfiguration(
+        configurations.testFixturesApiElements) {
+   skip()
+}
+```
+
+=== Extra publishing plugins
+
+* Artifactory plugin
+** Leverages the `maven-plugin`
+** Adds "build information" when uploading to Artifactory
+
+```
+plugins {
+  id("com.jfrog.artifactory") version "4.10.0"
+}
+```
+
+WARNING: No support for Gradle Module Metadata yet!
+
+=== Extra publishing plugins
+
+* Bintray plugin
+** Leverages the artifactory plugin
+** Provides way to publish to JCenter
+** Provides way to synchronize to Maven Central (optional)
+
+```
+plugins {
+  id("com.jfrog.bintray") version "1.8.4"
+}
+```
+
+WARNING: No support for Gradle Module Metadata yet!
+
+

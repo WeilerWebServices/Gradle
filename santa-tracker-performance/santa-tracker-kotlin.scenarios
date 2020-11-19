@@ -1,0 +1,5 @@
+# Performance scenarios for santa-tracker-android project
+include required(file("gradle-benchmark-base/incremental-base"))
+
+file-to-change  = "common/src/main/java/com/google/android/apps/santatracker/AudioPlayer.kt"
+tasks-to-measure = [":santa-tracker:assembleDebug"]

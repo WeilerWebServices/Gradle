@@ -1,0 +1,180 @@
+[background-color="#01303a"]
+== Metadata
+
+=== Supported metadata formats
+
+* Apache Maven™ POM file
+** Only in Maven repositories
+* Apache Ivy™ ivy.xml file
+** Only in Ivy repositories
+* Gradle Module Metadata file
+** In both types of repositories *in addition* to one of the above
+** Used by Gradle 6 if available instead of the above
+** Carries information on _variants_, _dependency constraints_, _custom artifacts_
+
+=== Gradle Module Metadata
+
+```
+junit-jupiter-api/
+├── junit-jupiter-api-5.6.0.pom ('published-with-gradle-metadata' marker)
+├── junit-jupiter-api-5.6.0.module
+├── junit-jupiter-api-5.6.0.jar
+├── junit-jupiter-api-5.6.0-javadoc.jar
+├── junit-jupiter-api-5.6.0-sources.jar
+```
+
+* Information in `module` missing in `pom` includes:
+** Variants with the knowledge about `javadoc.jar` and `sources.jar`
+** Constraint on other JUnit `5.6.0` modules to align versions
+
+
+=== Published variants with artifacts
+
+_junit-jupiter-api-5.6.0.module_ (excerpt)
+```
+"variants": [
+  { "name": "apiElements" ... },
+  { "name": "runtimeElements" ... },
+  { "name": "javadocElements",
+    "attributes": {
+      "org.gradle.category": "documentation",
+      "org.gradle.docstype": "javadoc",
+    },
+    "files": [
+      { "url": "junit-jupiter-api-5.6.0-javadoc.jar" ... }
+    ]},
+  { "name": "sourcesElements" ... },
+```
+
+_build.gradle.kts_ (consumer example)
+```groovy
+val javadoc by configurations.creating {
+    attributes.attribute(CATEGORY_ATTRIBUTE, objects.named(DOCUMENTATION))
+    attributes.attribute(DOCS_TYPE_ATTRIBUTE, objects.named(JAVADOC))
+}
+dependencies { javadoc("org.junit.jupiter:junit-jupiter-api:5.6.0") }
+tasks.create("doSomethingWithJavadocs") { doLast { javadoc.files } }
+```
+
+=== Published platform dependency
+
+_junit-jupiter-api-5.6.0.module_ (excerpt)
+```
+"variants": [
+  {
+    "name": "apiElements",
+    "attributes": { "org.gradle.category": "library", ... },
+    "dependencies": [
+      {
+        "group": "org.junit",
+        "module": "junit-bom",
+        "version": { "requires": "5.6.0" },
+        "attributes": { "org.gradle.category": "platform" },
+      }
+    ]
+  },
+```
+
+=== Published platform (BOM)
+
+_junit-bom-5.6.0.module_ (excerpt)
+```
+"variants": [
+  {
+    "name": "apiElements",
+    "attributes": { "org.gradle.category": "platform", ... },
+    "dependencyConstraints": [
+      {
+        "group": "org.junit.jupiter",
+        "module": "junit-jupiter-engine",
+        "version": { "requires": "5.6.0" }
+      }
+    ]
+  },
+```
+
+_build.gradle.kts_ (consumer example)
+```kotlin
+dependencies {
+    implementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    //                         ↑↑↑ brings in 'junit-bom:5.6.0'
+    implementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+    //    ↑↑↑ thanks to 'junit-bom:5.6.0' it will align to 5.6.0
+}
+```
+
+=== Metadata format features
+
+[cols="55%,15%,15%,15%"]
+|===
+||Gradle|POM|Ivy
+
+|Dependency constraints
+|✔
+|X*
+|X
+
+|Dependencies on platforms
+|✔
+|X*
+|X
+
+|Rich version constraints
+|✔
+|X
+|X
+|===
+
++*+ `<dependencyManagement>` blocks are added to poms
+
+=== Metadata format features
+
+[cols="55%,15%,15%,15%"]
+|===
+||Gradle|POM|Ivy
+
+|Component capabilities
+|✔
+|X
+|X
+
+|Feature variants
+|✔
+|X**
+|✔
+
+|Custom components
+|✔
+|X**
+|X
+|===
+
++**+ Artifacts have to be addressed directly by consumer (e.g. by classifier)
+
+=== Metadata with custom variants
+
+_guava-28.1.module_ (how could it look like?)
+```
+"variants": [
+  { "name": "jdk6ApiElements", "dependencies": [ ... ],
+    "attributes": { "org.gradle.jvm.version": 6, ... },
+    "files": [{ "url": "../28.1-android/guava-28.1-android.jar" }]
+  },
+  { "name": "jdk8ApiElements", "dependencies": [ ... ],
+    "attributes": { "org.gradle.jvm.version": 8, ... },
+    "files": [{ "url": "../28.1-jre/guava-28.1-jre.jar" }]
+  },
+  { "name": "jdk6RuntimeElements" ... },
+  { "name": "jdk8RuntimeElements" ... },
+```
+
+_build.gradle.kts_ (consumer example)
+```
+dependencies {
+    implementation("com.google.guava:guava:28.1-jre")
+}
+java {
+    // 6 or 7 gets 'android.jar', 8+ gets 'jre.jar', <6 fails
+    targetCompatibility = JavaVersion.VERSION_1_6
+}
+```

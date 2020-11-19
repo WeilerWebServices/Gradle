@@ -1,0 +1,40 @@
+plugins {
+    id 'org.gradle.playframework' version '0.10'
+}
+
+play {
+    platform {
+        playVersion = '2.6.15'
+        scalaVersion = '2.12'
+        javaVersion = JavaVersion.VERSION_1_8
+    }
+
+    injectedRoutesGenerator = true
+}
+
+// tag::play-dependencies[]
+dependencies {
+    implementation "commons-lang:commons-lang:2.6"
+    implementation "com.typesafe.play:play-guice_2.12:2.6.15"
+    implementation "ch.qos.logback:logback-classic:1.2.3"
+    testImplementation "org.scalatestplus.play:scalatestplus-play_2.12:3.1.2"
+}
+// end::play-dependencies[]
+
+repositories {
+    jcenter()
+    maven {
+        name "lightbend-maven-release"
+        url "https://repo.lightbend.com/lightbend/maven-releases"
+    }
+    ivy {
+        name "lightbend-ivy-release"
+        url "https://repo.lightbend.com/lightbend/ivy-releases"
+        layout "ivy"
+    }
+
+    maven {
+        name "gradle-js"
+        url "https://repo.gradle.org/gradle/javascript-public"
+    }
+}

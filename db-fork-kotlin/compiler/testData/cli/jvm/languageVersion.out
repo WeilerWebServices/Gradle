@@ -1,0 +1,4 @@
+compiler/testData/cli/jvm/languageVersion.kt:4:5: error: members are not allowed in annotation class
+    class Nested
+    ^
+COMPILATION_ERROR

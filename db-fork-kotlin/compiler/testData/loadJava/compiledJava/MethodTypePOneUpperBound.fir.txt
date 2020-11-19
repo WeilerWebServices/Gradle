@@ -1,0 +1,4 @@
+public open class MethodTypePOneUpperBound : R|java/lang/Object| {
+    public open operator fun bar(): R|kotlin/Unit|
+
+}

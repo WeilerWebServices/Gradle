@@ -1,0 +1,14 @@
+apply plugin: "groovy"
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  groovy("org.codehaus.groovy:groovy-all:1.7.5")
+  testCompile "org.spockframework:spock-core:0.5-groovy-1.7"
+
+  // dependencies used by examples in this project
+  //  (not required for using Spock)
+  testRuntime "com.h2database:h2:1.2.147"
+}

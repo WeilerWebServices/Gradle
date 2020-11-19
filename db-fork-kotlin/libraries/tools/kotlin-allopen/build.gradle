@@ -1,0 +1,60 @@
+apply plugin: 'kotlin'
+
+configureJvmProject(project)
+configurePublishing(project)
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    compile project(':kotlin-gradle-plugin-api')
+    compile project(':kotlin-gradle-plugin-model')
+
+    compile kotlinStdlib()
+    compileOnly project(path: ':kotlin-compiler-embeddable', configuration: 'runtimeJar')
+    compileOnly project(':kotlin-allopen-compiler-plugin')
+
+    compileOnly gradleApi()
+
+    testCompile gradleApi()
+    testCompile "junit:junit:4.12"
+}
+
+evaluationDependsOn(":kotlin-allopen-compiler-plugin")
+
+tasks.withType(project.compileKotlin.class) {
+    kotlinOptions.languageVersion = "1.2"
+    kotlinOptions.apiVersion = "1.2"
+    kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
+}
+
+jar {
+    from(project(":kotlin-allopen-compiler-plugin").sourceSets.main.output.classesDirs)
+    from(project(":kotlin-allopen-compiler-plugin").sourceSets.main.output.resourcesDir)
+    manifestAttributes(manifest, project)
+}
+
+ArtifactsKt.runtimeJar(project, EmbeddableKt.rewriteDepsToShadedCompiler(project, jar, {}), {})
+
+artifacts {
+    archives sourcesJar
+}
+
+javadocJar()
+
+pluginBundle {
+    plugins {
+        kotlinAllopenPlugin {
+            id = 'org.jetbrains.kotlin.plugin.allopen'
+            description = displayName = 'Kotlin All Open compiler plugin'
+        }
+        kotlinSpringPlugin {
+            id = 'org.jetbrains.kotlin.plugin.spring'
+            description = displayName = 'Kotlin Spring compiler plugin'
+        }
+    }
+}
+
+test.executable = "${JDK_18}/bin/java"

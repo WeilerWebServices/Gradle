@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'idea'
+    id 'org.unbroken-dome.test-sets' version '1.4.2'
+}
+
+testSets {
+    integrationTest { dirName = 'integration-test' }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'io.reactivex:rxnetty-http:0.5.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.2'
+    compile 'com.opencsv:opencsv:3.9'
+    compile 'org.knowm:yank:3.3.0'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+
+    //TODO: Find a better strategy than having EVERYTHING on the path
+    //TODO: Make sure times are stored in UTC :-/ for MySql and the connection is consistent
+    runtime 'org.postgresql:postgresql:42.0.0'
+    runtime 'mysql:mysql-connector-java:6.0.6'
+
+    testCompile 'junit:junit:4.12'
+}
+
+mainClassName = 'com.gradle.exportapi.Application'
+
+task addAuthorization {
+    description 'Adds authorization to the system properties to be available at runtime if configured'
+    onlyIf {
+        System.getProperty("basic_auth") == null && System.getProperty("password") != null
+    }
+    doLast {
+        def username = System.getProperty("username")
+        tasks.run.systemProperties.put("basic_auth", "$username:${System.getProperty("password")}".bytes.encodeBase64().toString())
+    }
+}
+
+task validateDbConfig {
+    description 'Ensure that the target database properties file exists'
+    group 'Verification'
+
+    def fileName = System.getProperty("geexport.db.info", "db-info.properties")
+    ext.dbConfig = file("src/main/resources/${fileName}")
+    doLast {
+        assert dbConfig.exists() : "Please define target database information in $dbConfig"
+    }
+}
+
+run {
+    dependsOn addAuthorization
+    dependsOn validateDbConfig
+
+    /* Pass all the properties to the application java process*/
+    systemProperties System.getProperties()
+
+    if (System.getProperty('debug') != null) {
+        jvmArgs '-Xdebug',
+                '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006'
+    }
+}
+

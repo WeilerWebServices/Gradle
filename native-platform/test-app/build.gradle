@@ -1,0 +1,52 @@
+plugins {
+    id('application')
+    id('gradlebuild.native-platform-component')
+}
+
+mainClassName = 'net.rubygrapefruit.platform.test.Main'
+applicationName = 'native-platform-test'
+archivesBaseName = 'native-platform-test'
+
+if (versions.useRepo) {
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            substitute project(':native-platform') with module("net.rubygrapefruit:native-platform:${version}")
+            substitute project(':file-events') with module("net.rubygrapefruit:file-events:${version}")
+        }
+    }
+    configurations {
+        download
+    }
+    dependencies {
+        download "$group:${archivesBaseName}:${version}"
+    }
+}
+
+dependencies {
+    implementation project(':native-platform')
+    implementation project(':file-events')
+    implementation 'net.sf.jopt-simple:jopt-simple:4.2'
+}
+
+publishing {
+    publications {
+        main(MavenPublication) {
+            artifact(distZip)
+        }
+    }
+}
+
+// Download and unpack the application to allow it to be tested
+task download {
+    doLast {
+        copy {
+            from(configurations.download.files.collect { zipTree(it) })
+            into("$buildDir/download")
+        }
+    }
+}
+
+// Use System.in as input stream for the launched process to enable interactive input
+tasks.named("run", JavaExec) {
+    standardInput = System.in
+}

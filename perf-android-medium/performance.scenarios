@@ -1,0 +1,27 @@
+javaChange {
+  tasks = [":WordPress:assembleWasabiDebug"]
+  apply-abi-change-to = "WordPress/src/main/java/org/wordpress/android/WordPress.java"
+}
+
+androidManifestChange {
+  tasks = [":WordPress:assembleWasabiDebug"]
+  apply-android-manifest-change-to = "WordPress/src/main/AndroidManifest.xml"
+}
+
+androidResourceChange {
+    tasks = [":WordPress:assembleWasabiDebug"]
+    apply-android-resource-change-to = "WordPress/src/main/res/values/strings.xml"
+}
+
+upToDateSingleVariant {
+  tasks = [":WordPress:assembleWasabiDebug"]
+}
+
+rebuildSingleVariant {
+  cleanup-tasks = ["clean"]
+  tasks = [":WordPress:assembleWasabiDebug"]
+}
+
+help {
+  tasks = ["help"]
+}

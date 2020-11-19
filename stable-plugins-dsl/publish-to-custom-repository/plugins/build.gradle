@@ -1,0 +1,32 @@
+plugins {
+  id 'java-gradle-plugin'
+  id 'maven-publish'
+  id 'ivy-publish'
+}
+
+group 'org.example'
+version '1.0.0'
+
+gradlePlugin {
+    plugins {
+        hello {
+            id = "org.example.hello"
+            implementationClass = "org.example.hello.HelloPlugin"
+        }
+        goodbye {
+            id = "org.example.goodbye"
+            implementationClass = "org.example.goodbye.GoodbyePlugin"
+        }
+    }
+}
+
+publishing {
+  repositories {
+    maven {
+      url "../../maven-repo"
+    }
+    ivy {
+      url "../../ivy-repo"
+    }
+  }
+}

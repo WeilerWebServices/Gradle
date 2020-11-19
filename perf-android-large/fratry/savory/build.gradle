@@ -1,0 +1,13 @@
+apply plugin: 'com.android.library'
+dependencies {
+    annotationProcessor deps.other.recyclerview
+    annotationProcessor deps.apt.daggerCompiler
+    compile deps.other.rxlifecycle
+    compile deps.other.locationServiceGoogle
+    compile project(':fratry:linotype')
+    compile project(':fratry:Ormond')
+    compile project(':fratry:crapple')
+
+    testCompile project(':outissue:cyclus')
+    testCompile project(':fratry:crapple')
+}

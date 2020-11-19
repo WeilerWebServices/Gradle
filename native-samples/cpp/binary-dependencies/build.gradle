@@ -1,0 +1,17 @@
+plugins {
+    id 'cpp-application'
+    id 'xcode'
+    id 'visual-studio'
+}
+
+repositories {
+    maven {
+        url '../repo'
+    }
+}
+
+application {
+    dependencies {
+        implementation 'org.gradle.cpp-samples:list:1.5'
+    }
+}

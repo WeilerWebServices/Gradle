@@ -1,0 +1,28 @@
+description = 'Webinar implementation (ant project).'
+
+ant.importBuild 'build.xml'
+
+clean.enabled = false
+prepare.enabled = false
+
+compileClasses {
+  inputs.files fileTree("src/main/java")
+  outputs.files fileTree("target/classes")
+}
+
+buildJar {
+  ext.outputJar = file(ant.jarFile)
+
+  inputs.files compileClasses.outputs.files
+  outputs.file ext.outputJar
+
+  dependsOn ":webinar-api:build"
+}
+
+configurations {
+  archives
+}
+
+artifacts {
+  archives file: buildJar.ext.outputJar, builtBy: buildJar
+}

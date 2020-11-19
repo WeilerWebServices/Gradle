@@ -1,0 +1,60 @@
+subprojects { subproject ->
+    apply plugin: 'xcode'
+    apply plugin: 'xctest'
+
+    group = 'org.gradle.swift-samples'
+
+    // Move the build directories for all projects into a single top-level directory
+    buildDir = rootProject.file("build/${subproject.name.capitalize()}")
+
+    components.withType(ProductionSwiftComponent) {
+        // By convention, source files are located in the root directory/Sources/<module>
+        source.from rootProject.file("Sources/${subproject.name.capitalize()}")
+    }
+
+    components.withType(SwiftXCTestSuite) {
+        // By convention, test source files are located in the root directory/Tests/<module>Tests
+        source.from rootProject.file("Tests/${subproject.name.capitalize()}Tests")
+    }
+}
+
+project(':app') {
+    apply plugin: 'swift-application'
+
+    application {
+        // Configure the dependencies of the executable
+        dependencies {
+            implementation project(':utilities')
+        }
+    }
+}
+
+project(':utilities') {
+    apply plugin: 'swift-library'
+
+    library {
+        // Configure the dependencies of the library
+        dependencies {
+            api project(':list')
+        }
+    }
+}
+
+project(':list') {
+    apply plugin: 'swift-library'
+}
+
+allprojects { p ->
+    // Work around for https://github.com/gradle/gradle-native/issues/376
+    // TODO: Remove this once issue has been fixed.
+    tasks.withType(UnexportMainSymbol).configureEach {
+        doFirst {
+            p.projectDir.mkdirs()
+        }
+    }
+    tasks.withType(AbstractLinkTask).configureEach {
+        doFirst {
+            p.projectDir.mkdirs()
+        }
+    }
+}

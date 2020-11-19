@@ -1,0 +1,32 @@
+description = 'Kotlin Test Annotations Common'
+
+apply plugin: 'kotlin-platform-common'
+apply plugin: 'pill-configurable'
+
+configureDist(project)
+configurePublishing(project)
+
+
+dependencies {
+    compile kotlinStdlib("common")
+    testCompile project(":kotlin-test:kotlin-test-common")
+}
+
+pill {
+    importAsLibrary = true
+}
+
+jar {
+    manifestAttributes(manifest, project, 'Test')
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+javadocJar()

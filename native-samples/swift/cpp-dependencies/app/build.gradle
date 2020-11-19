@@ -1,0 +1,11 @@
+
+plugins {
+    id 'swift-application'
+    id 'xctest'
+}
+
+application {
+    dependencies {
+        implementation project(':list')
+    }
+}

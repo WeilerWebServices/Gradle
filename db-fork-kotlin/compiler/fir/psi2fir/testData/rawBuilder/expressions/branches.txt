@@ -1,0 +1,63 @@
+FILE: branches.kt
+    public? final? fun foo(a: Int, b: Int): <implicit> {
+        ^foo when () {
+            >(a#, b#) ->  {
+                a#
+            }
+            else ->  {
+                b#
+            }
+        }
+
+    }
+    public? final? fun bar(a: Double, b: Double): Double {
+        when () {
+            >(a#, b#) ->  {
+                println#(a#)
+                ^bar a#
+            }
+            else ->  {
+                println#(b#)
+                ^bar b#
+            }
+        }
+
+    }
+    public? final? fun baz(a: Long, b: Long): Long {
+        when () {
+            >(a#, b#) ->  {
+                println#(a#)
+                ^baz a#
+            }
+            else ->  {
+                ^baz b#
+            }
+        }
+
+    }
+    public? final? fun grade(g: Int): String {
+        ^grade when (g#) {
+            ||(==($subj$, Int(6)), ==($subj$, Int(7))) ->  {
+                String(Outstanding)
+            }
+            ==($subj$, Int(5)) ->  {
+                String(Excellent)
+            }
+            ==($subj$, Int(4)) ->  {
+                String(Good)
+            }
+            ==($subj$, Int(3)) ->  {
+                String(Mediocre)
+            }
+            in($subj$, rangeTo#(Int(1), Int(2))) ->  {
+                String(Fail)
+            }
+            ($subj$ is Number) ->  {
+                String(Number)
+            }
+            else ->  {
+                String(Unknown)
+            }
+        }
+
+    }

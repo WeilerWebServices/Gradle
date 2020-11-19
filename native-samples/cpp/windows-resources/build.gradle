@@ -1,0 +1,37 @@
+plugins {
+    id 'cpp-application'
+    id 'visual-studio'
+    id 'xcode'
+}
+
+application {
+    targetMachines = [machines.windows]
+    binaries.whenElementFinalized { binary ->
+        def compileResources = tasks.register("compileResources${binary.name.capitalize()}", WindowsResourceCompile) {
+            targetPlatform = binary.compileTask.get().targetPlatform
+            toolChain = binary.toolChain
+            includes.from file("src/main/headers")
+            source.from fileTree(dir: "src/main/rc", includes: ["**/*.rc"])
+            compilerArgs.addAll toolChain.map({ NativeToolChain toolChain ->
+                if (toolChain instanceof VisualCpp) {
+                    return ["/v"]
+                }
+                return []
+            }).get()
+            it.outputDir = layout.buildDirectory.dir("windows-resources/${binary.name}").get().asFile
+        }
+
+        binary.linkTask.get().configure {
+            dependsOn compileResources
+            source.from compileResources.map({ return fileTree(dir: it.outputDir, includes: ["**/*.res","**/*.obj"]) })
+
+            linkerArgs.addAll toolChain.map { NativeToolChain toolChain ->
+                if (toolChain instanceof VisualCpp) {
+                    return ["user32.lib"]
+                }
+                return []
+            }
+        }
+    }
+}
+

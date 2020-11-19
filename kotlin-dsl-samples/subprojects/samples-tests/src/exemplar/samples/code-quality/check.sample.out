@@ -1,0 +1,6 @@
+> Task :checkstyleMain
+> Task :checkstyleTest
+> Task :test
+> Task :jacocoTestCoverageVerification
+> Task :pmdMain
+> Task :pmdTest

@@ -1,0 +1,1034 @@
+[
+    {
+        "path": "",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "components",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-change"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-change"
+    },
+    {
+        "path": "binaries",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-change"
+    },
+    {
+        "path": "testSuites",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-change"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-change"
+    },
+    {
+        "path": "tasks",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.assemble",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.check",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks",
+        "project": ":",
+        "state": "Created",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.sources",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.sources",
+        "project": ":",
+        "state": "Initialized",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries",
+        "project": ":",
+        "state": "Initialized",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "Discovered",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "Discovered",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar.sources",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.sources",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.sources",
+        "project": ":",
+        "state": "Initialized",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries",
+        "project": ":",
+        "state": "Initialized",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "Discovered",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "Discovered",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary.sources",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary.sources",
+        "project": ":",
+        "state": "Initialized",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.sources",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.assemble",
+        "project": ":",
+        "state": "Initialized",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.build",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.buildDependents",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.buildEnvironment",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.buildNeeded",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.check",
+        "project": ":",
+        "state": "Initialized",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.classes",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.clean",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.compileJava",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.compileTestJava",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.components",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.createMainJar",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.dependencies",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.dependencyInsight",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.help",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.init",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.jar",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.javadoc",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.mainApiJar",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.mainJar",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.model",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.processResources",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.processTestResources",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.projects",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.properties",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.tasks",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.test",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.testClasses",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.testMainJarBinary",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.testMainJarBinaryTest",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.wrapper",
+        "project": ":",
+        "state": "Registered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.tasks",
+        "project": ":",
+        "state": "Discovered",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks.tasks",
+        "project": ":",
+        "state": "Initialized",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.mainClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "binaries.testClasses",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar.sources",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.sources",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "tasks",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "components.main.binaries.jar",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    },
+    {
+        "path": "testSuites.test.binaries.mainJarBinary",
+        "project": ":",
+        "state": "GraphClosed",
+        "type": "state-changed"
+    }
+]

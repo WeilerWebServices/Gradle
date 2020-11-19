@@ -1,0 +1,63 @@
+apply plugin: "groovy"
+apply plugin: "idea"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile localGroovy()
+    testCompile 'org.testng:testng:6.8.5'
+    testCompile 'org.seleniumhq.selenium:selenium-chrome-driver:2.37.1'
+    testCompile 'org.seleniumhq.selenium:selenium-firefox-driver:2.37.1'
+}
+
+test {
+    onlyIf { false } // don't run these tests
+}
+
+subprojects { project ->
+    buildDir = file("$rootProject.buildDir/$name")
+
+    def driver = project.name
+
+    task test(type: Test) { driverTestTask ->
+        rootProject.test.dependsOn driverTestTask
+        finalizedBy "decorateResults"
+
+        useTestNG()
+
+        workingDir = rootProject.test.workingDir
+        testSrcDirs = rootProject.test.testSrcDirs
+        testClassesDir = rootProject.test.testClassesDir
+        classpath = rootProject.test.classpath
+
+        reports {
+            html.destination = rootProject.reporting.file("$project.name/html")
+            junitXml {
+                destination = file("$rootProject.buildDir/test-results/$project.name")
+                outputPerTestCase = true
+            }
+        }
+        binResultsDir = rootProject.file("$rootProject.buildDir/test-results-bin/$project.name")
+
+        systemProperty "driver", driver
+        systemProperty "reports", "$rootProject.buildDir/browser-reports/$project.name"
+        systemProperty "seleniumServerUrl", project.hasProperty("seleniumServerUrl") ? seleniumServerUrl : null
+
+        jvmArgs "-Xmx64m"
+    }
+    
+    task decorateResults(type: Copy) {
+        def displaySuffix = " ($project.name)"
+        def xmlResultsDir = test.reports.junitXml.destination
+        def decoratedResultsDir = project.file("$xmlResultsDir-decorated")
+
+        into decoratedResultsDir
+        from xmlResultsDir
+        includeEmptyDirs = false
+
+        filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2$displaySuffix\"") }
+    }
+
+}

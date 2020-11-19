@@ -1,0 +1,25 @@
+apply plugin: 'com.android.library'
+dependencies {
+    annotationProcessor project(':outissue:caricetum:handbolt')
+    annotationProcessor project(':outissue:caricetum:Chelura')
+    annotationProcessor deps.apt.daggerCompiler
+    annotationProcessor deps.other.recyclerview
+
+    compile project(':outissue:nutate')
+    compile project(':outissue:extended')
+    compile project(':outissue:caricetum:midship')
+    compile project(':outissue:situla')
+    compile project(':outissue:carnally')
+    compile project(':fratry:Krapina')
+    compile project(':fratry:Ormond')
+    compile project(':fratry:subradius')
+    compile project(':fratry:crapple')
+    compile project(':outissue:tetragram')
+    compile deps.external.dagger
+
+    provided deps.apt.javax
+
+    testCompile project(':outissue:browntail')
+    testCompile project(':outissue:cyclus')
+    testCompile project(':outissue:caricetum:hermetic')
+}

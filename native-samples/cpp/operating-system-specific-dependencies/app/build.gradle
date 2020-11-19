@@ -1,0 +1,20 @@
+plugins {
+    id 'cpp-application'
+}
+
+application {
+    targetMachines = [
+        machines.windows,
+        machines.linux,
+        machines.macOS
+    ]
+    binaries.configureEach {
+        dependencies {
+            if (targetMachine.operatingSystemFamily.windows) {
+                implementation project(':winConsole')
+            } else {
+                implementation project(':ansiConsole')
+            }
+        }
+    }
+}

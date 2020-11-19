@@ -1,0 +1,15 @@
+dependencies {
+    compile project(":grails-core")
+    compile "org.codehaus.groovy:groovy-console:$groovyVersion"
+    compile "org.codehaus.groovy:groovy-groovysh:$groovyVersion"
+    compile "org.fusesource.jansi:jansi:$jansiVersion",
+            "jline:jline:$jlineVersion",
+            "net.java.dev.jna:jna:$jnaVersion"
+
+    compile("org.springframework.boot:spring-boot:$springBootVersion")
+    compile "org.springframework:spring-test:${springVersion}"
+
+    compile "org.springframework:spring-web:${springVersion}", optional
+
+    compile "javax.servlet:javax.servlet-api:$servletApiVersion", optional
+}

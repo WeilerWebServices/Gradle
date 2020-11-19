@@ -1,0 +1,50 @@
+plugins {
+    id 'cpp-application'
+    id 'xcode'
+    id 'visual-studio'
+}
+
+def codeGeneration = tasks.register("codeGeneration", CodeGenerator) {
+    cppDir = project.layout.buildDirectory.dir("generated/cpp")
+    headersDir = project.layout.buildDirectory.dir("generated/headers")
+}
+
+application {
+    source.from codeGeneration.flatMap { it.cppDir }
+    privateHeaders.from codeGeneration.flatMap { it.headersDir }
+}
+
+
+// Code generation implementation could be in another plugin or buildSrc
+class CodeGenerator extends DefaultTask {
+    @OutputDirectory
+    DirectoryProperty cppDir = project.objects.directoryProperty()
+    
+    @OutputDirectory
+    DirectoryProperty headersDir = project.objects.directoryProperty()
+
+    @TaskAction
+    public void generate() {
+        generateSources(cppDir.getAsFile().get())
+        generateHeaders(headersDir.getAsFile().get())
+    }
+
+    private void generateSources(File generatedDir) {
+        new File(generatedDir, "main.cpp").text = """
+#include <iostream>
+#include "header.h"
+
+int main() {
+    std::cout << MESSAGE << std::endl;
+    return 0;
+}
+        """
+    }
+    private void generateHeaders(File generatedDir) {
+        new File(generatedDir, "header.h").text = """
+#pragma once
+
+#define MESSAGE "Hello, World!"
+        """
+    }
+}

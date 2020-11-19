@@ -1,0 +1,32 @@
+## Topics
+
+- Supported platforms and tool chains, install instructions
+- Define a library
+- Define an application
+- Define dependency on a library
+    - On the component level, the binary 
+- Prebuilt binaries
+- Binary dependencies and publishing
+- Source dependencies
+    - Declaring and using
+    - Dependency on version, ranges, branch
+    - Injecting build logic
+- Building and installation
+- Configuring source and header locations and source files
+- Configuring library and application name and module
+- Configuring compiler and linker flags
+- Static and shared libraries
+- Private and public C++ headers
+- Using C++ library from Swift
+- Release and debug builds
+- Xcode integration
+- Unit tests with XCTest, Google test
+- XCTest integration
+- Using with composite builds
+- Incremental compile and caching
+- Migration from Swift Package manager, CMake
+- Publish to Swift PM
+- Dealing with different source layouts, in particular the case where source files for multiple components are in the same source directory
+- Describe the model has 3 layers: component, binary and task
+- Code generation
+- Using the build output in other tasks

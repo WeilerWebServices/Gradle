@@ -1,0 +1,10 @@
+rootProject.name = 'utilities'
+
+sourceControl {
+    gitRepository("../build-wrapper-plugin") {
+        producesModule("org.gradle.samples:build-wrapper")
+    }
+    gitRepository("../list") {
+        producesModule("org.gradle.cpp-samples:list")
+    }
+}

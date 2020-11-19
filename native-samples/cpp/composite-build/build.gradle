@@ -1,0 +1,11 @@
+plugins {
+    id 'cpp-application'
+    id 'xcode'
+    id 'visual-studio'
+}
+
+application {
+    dependencies {
+        implementation 'org.gradle.cpp-samples:utilities:1.2'
+    }
+}

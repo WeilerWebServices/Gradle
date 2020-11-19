@@ -1,0 +1,3 @@
+task printChecksum {
+  description = "Prints the checksum"
+}

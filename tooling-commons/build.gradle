@@ -1,0 +1,276 @@
+buildscript {
+  repositories { jcenter() }
+  dependencies { classpath 'org.apache.ivy:ivy:2.4.0' }
+}
+
+import org.apache.ivy.osgi.core.ManifestParser
+import org.apache.ivy.osgi.util.VersionRange
+import org.apache.ivy.osgi.util.Version
+import org.gradle.internal.os.OperatingSystem
+import org.apache.ivy.osgi.core.BundleInfo
+
+import java.text.SimpleDateFormat
+
+plugins {
+  id 'com.gradle.build-scan' version '1.0'
+}
+
+buildScan {
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+    licenseAgree = 'yes'
+}
+
+// define the group of the GAV
+group = 'com.gradleware.tooling'
+
+// define the version of the GAV
+version = file('version.txt').text.trim()
+
+// in case this is not a final release, add a timestamp to the version for unique identification of 'snapshot' versions
+Date versionDate = new Date()
+if (!project.hasProperty('build.type') || project.property('build.type') != 'release') {
+  version = version + '-' + calculateVersionQualifier(project, '', versionDate)
+}
+
+// calculate the bundle version, and use a more precise date qualifier when built on a CI server
+ext.bundleVersionQualifier =  calculateVersionQualifier(project, 'v', versionDate)
+ext.bundleBaseVersion = getBundleVersion(version)
+ext.bundleVersion = bundleBaseVersion + '.' +  bundleVersionQualifier
+
+description = "Root project of the Commons project of the Gradle Tooling Platform."
+
+subprojects {
+
+  group = rootProject.group
+  version = rootProject.version
+
+  // add required repositories for external dependencies
+  repositories {
+    jcenter()
+    maven {
+      name 'gradle-public-snapshots'
+      url gradlePublicSnapshotsRepositoryUrl
+    }
+  }
+
+  // fail eagerly on version conflict (includes transitive dependencies) and enforce certain dependency versions
+  configurations.all {
+    resolutionStrategy {
+      failOnVersionConflict()
+
+      forcedModules = [
+          "org.slf4j:slf4j-api:$slf4jVersion",            // logback-classic uses logback 1.7.6
+          "org.hamcrest:hamcrest-core:1.3",               // junit uses hamcrest 1.1
+          "org.codehaus.groovy:groovy-all:$groovyVersion" // spock uses groovy 2.4.1
+      ]
+    }
+  }
+
+  // apply Java plugin (production code) and Groovy plugin (test code)
+  apply plugin: 'groovy'
+
+  // make sure it compiles and runs with Java 7
+  sourceCompatibility = 1.7
+  targetCompatibility = 1.7
+
+  // 1) fork the compilation
+  // 2) report all compiler warnings
+  // 3) on Mac OS, in addition
+  //    a) use the correct compiler version (rather than just working with the compatibility flags)
+  //    b) convert all compiler warnings to errors
+  tasks.withType(AbstractCompile).all {
+    options.compilerArgs << '-Xlint:all'
+    options.fork = true
+    if (OperatingSystem.current().isMacOsX()) {
+      //options.compilerArgs << '-Werror'
+      options.forkOptions.executable = "/usr/libexec/java_home -v $targetCompatibility".execute().text.trim() + "/bin/javac"
+    }
+  }
+
+  // make sure the main resources folder is always generated in the build directory, otherwise 'compileTestGroovy' issues a warning
+  task mainResourcesDir() {
+    outputs.dir sourceSets.main.output.resourcesDir
+    doLast { sourceSets.main.output.resourcesDir.mkdirs() }
+  }
+  processResources.dependsOn mainResourcesDir
+
+  // bundle sources
+  task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+  }
+
+  // fail for Javadoc errors (there is no way to make it fail on Javadoc warnings)
+  javadoc.failOnError = true
+  if (JavaVersion.current().isJava8Compatible()) {
+    javadoc.options.addStringOption('Xdoclint:all,-html', '-quiet')
+  }
+
+  // generate javadoc as part of the build once all tests have passed
+  build.dependsOn javadoc
+  javadoc.shouldRunAfter check
+
+  // cannot apply publishing plugin to all sub-projects here due to limitations in that plugin
+  // apply plugin: 'maven-publish'
+
+  // allow to run tests in parallel and set bigger PermGen for executors
+  tasks.withType(Test).all {
+      maxParallelForks = 4
+      jvmArgs '-XX:MaxPermSize=1024m'
+  }
+
+  // allow to
+  //  - run cross-version tests in 'toolingmodel' sub-project by mapping the relevant system property from the project properties to the forked test process
+  //  - run cross-version tests in embedded mode in 'toolingmodel' sub-project by passing the relevant system property from the project properties to the forked test process
+  if (path in [':toolingmodel']) {
+    tasks.withType(Test).all {
+      def propertyKeyVersions = 'com.gradleware.tooling.integtest.versions'
+      if (project.properties.containsKey(propertyKeyVersions)) {
+        systemProperty propertyKeyVersions, project.properties.get(propertyKeyVersions)
+      }
+      def propertyKeyEmbedded = 'com.gradleware.tooling.integtest.embedded'
+      if (project.properties.containsKey(propertyKeyEmbedded)) {
+        systemProperty propertyKeyEmbedded, project.properties.get(propertyKeyEmbedded)
+      }
+    }
+  }
+
+  if (path in [':toolingmodel', ':toolingclient', ':toolingutils']) {
+    // Add the license files to all projects consumed by Buildship
+    sourceSets {
+      main {
+        resources {
+          srcDir rootProject.file('gradle/license')
+        }
+      }
+    }
+
+    // validate OSGi manifest
+    tasks['check'].doLast {
+      def bundleInfo = ManifestParser.parseManifest(file('META-INF/MANIFEST.MF'))
+
+      // bundle version in manifest should have ${major}.${minor}.${service}.qualifier format
+      assertEquals("OSGi manifest version does not match with ${project.name} module version", "${bundleBaseVersion}.qualifier", "${bundleInfo.version.toString()}")
+
+      // validate dependency version ranges
+      assertOsgiDependencyRange(bundleInfo, 'com.gradleware.tooling.utils', bundleBaseVersion)
+      assertOsgiDependencyRange(bundleInfo, 'com.gradleware.tooling.client', bundleBaseVersion)
+      assertOsgiDependencyRange(bundleInfo, 'com.gradleware.tooling.model', bundleBaseVersion)
+      assertOsgiDependencyRange(bundleInfo, 'org.gradle.toolingapi', getBundleVersion(toolingApiVersion))
+
+      // for each exported package the current version should be added as a constraint
+      bundleInfo.capabilities.each {
+        assertEquals ("OSGi exported package ${it.name} version constraint does not match with module version in ${project.name}",
+                      new Version(bundleBaseVersion), it.version) }
+    }
+  }
+
+  // apply Checkstyle plugin, mainly to ensure copyright and javadoc is present
+  apply plugin: 'checkstyle'
+
+  // share checkstyle config across all sub-projects
+  def checkstyleConfigDir = "$rootDir/gradle/config/checkstyle"
+  tasks.withType(Checkstyle).all {
+    configFile = "$checkstyleConfigDir/checkstyle.xml" as File
+    configProperties = ['checkstyleConfigDir': checkstyleConfigDir]
+    inputs.file "$checkstyleConfigDir/suppressions.xml" as File
+  }
+
+  // if defined, add OSGi manifest to the jars
+  def osgiManifest = project.file('META-INF/MANIFEST.MF')
+  if (osgiManifest.exists()) {
+    jar.manifest {
+      from(osgiManifest) {
+        eachEntry { entry ->
+          if (entry.key == 'Bundle-Version') {
+              entry.value = bundleVersion
+          }
+        }
+      }
+    }
+  }
+}
+
+// tag the HEAD of the current branch and push the new tag
+task tag {
+  doLast {
+    // create tag
+    execCommand "git", "tag", "-a", "v$version", "-m", "Create tag v$version"
+    // push tag
+    execCommand "git", "push", "origin", "v$version"
+  }
+}
+
+// bump up the service segment in the version file and commit/push the change
+task incrementVersion {
+  dependsOn tag
+  doLast {
+    // update version file
+    def nextVersion
+    def matcher = version =~ /(\d+)\.(\d+)\.?(\d+)?/
+    if (matcher.find()) {
+      def major = matcher.group(1)
+      def minor = matcher.group(2)
+      def service = matcher.group(3)
+      if (service == null) {
+        service = '0'
+      }
+      def nextService = Integer.parseInt(service) + 1
+      nextVersion = "${major}.${minor}.${nextService}"
+      file('version.txt').text = "${nextVersion}${System.getProperty('line.separator')}"
+    } else {
+      throw new IllegalStateException("Unparseable version: $version.")
+    }
+    // add/commit change
+    execCommand "git", "commit", "-a", "-m", "Increase version to $nextVersion"
+    // push change
+    //execCommand "git", "push", "origin", "master"
+  }
+}
+
+private ExecResult execCommand(Object... args) {
+  exec {
+    commandLine args
+  }
+}
+
+// for each internal module dependency the version constraint should include the current version and should have an exclusive upper bound for the next minor release
+// for example, if the the current version is 1.2.3, then the version constraint should be [1.2.3, 1.3.0).
+def assertOsgiDependencyRange(BundleInfo bundleInfo, String name, String version) {
+  def matcher = version =~ /(\d+)\.(\d+)\.\d+/
+  if (!matcher.matches()) { throw new RuntimeException("Invalid version format: ${version}") }
+  def versionRange = new VersionRange(false, new Version(version), true, new Version("${matcher.group(1)}.${Integer.parseInt(matcher.group(2)) + 1}.0".toString()))
+  bundleInfo.requires.findAll { it.name == name }.each {
+    assertEquals ("OSGi dependency ${it.name} version does not match to module dependency version in ${project.name}", versionRange, it.version)
+  }
+}
+
+def calculateVersionQualifier(Project project, String prefix, Date date) {
+  SimpleDateFormat dateFormat
+  if (project.hasProperty('build.invoker') && project.property('build.invoker') == 'ci') {
+    // in case of CI builds, add the full date and time to the version timestamp
+    dateFormat = new SimpleDateFormat("yyyyMMddkkmmss")
+  } else {
+    // in case of local builds, do not add the time to the version timestamp to ensure incremental updates apply when building locally
+    dateFormat = new SimpleDateFormat("yyyyMMdd")
+  }
+  dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+  prefix + dateFormat.format(date)
+}
+
+def getBundleVersion(String version) {
+  def matcher = version =~ /(\d+)\.(\d+)(?:-.*|\.(\d+)(?:-.*)?)?/
+  if (matcher.matches()) {
+    def major = matcher.group(1)
+    def minor = matcher.group(2)
+    def service = matcher.group(3) ?: '0'
+    return "$major.$minor.$service"
+  } else {
+    throw new IllegalArgumentException("Invalid bundle version: $version")
+  }
+}
+
+def assertEquals(String message, Object expected, Object actual) {
+  if (expected != actual) {
+    throw new RuntimeException("${message}. Expected: ${expected}, actual: ${actual}.")
+  }
+}

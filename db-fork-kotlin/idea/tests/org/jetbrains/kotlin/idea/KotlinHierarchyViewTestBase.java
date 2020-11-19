@@ -1,0 +1,40 @@
+/*
+ * Copyright 2010-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license
+ * that can be found in the license/LICENSE.txt file.
+ */
+
+package org.jetbrains.kotlin.idea;
+
+import com.intellij.ide.hierarchy.HierarchyTreeStructure;
+import com.intellij.openapi.util.Computable;
+import com.intellij.openapi.util.io.FileUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.kotlin.idea.test.KotlinLightCodeInsightFixtureTestCase;
+import org.jetbrains.kotlin.test.HierarchyViewTestFixture;
+
+import java.io.File;
+import java.io.IOException;
+
+public abstract class KotlinHierarchyViewTestBase extends KotlinLightCodeInsightFixtureTestCase {
+    private final HierarchyViewTestFixture hierarchyFixture = new HierarchyViewTestFixture();
+
+    protected void doHierarchyTest(
+            @NotNull Computable<? extends HierarchyTreeStructure> treeStructureComputable,
+            @NotNull String... fileNames
+    ) throws Exception {
+        configure(fileNames);
+        String expectedStructure = loadExpectedStructure();
+
+        hierarchyFixture.doHierarchyTest(treeStructureComputable.compute(), expectedStructure);
+    }
+
+    private void configure(@NotNull String[] fileNames) {
+        myFixture.configureByFiles(fileNames);
+    }
+
+    @NotNull
+    private String loadExpectedStructure() throws IOException {
+        String verificationFilePath = getTestDataPath() + "/" + getTestName(false) + "_verification.xml";
+        return FileUtil.loadFile(new File(verificationFilePath));
+    }
+}

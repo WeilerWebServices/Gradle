@@ -1,0 +1,13 @@
+plugins {
+    id 'cpp-library'
+    id 'xcode'
+}
+
+group = 'org.gradle.cpp-samples'
+version = '1.2'
+
+library {
+    dependencies {
+        api 'org.gradle.cpp-samples:list:1.5'
+    }
+}

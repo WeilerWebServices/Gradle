@@ -1,0 +1,57 @@
+#!/bin/bash
+
+echo "############################################################"
+echo "# GRADLE BOOK EXAMPLES TEST HARNESS"
+echo ""
+echo "# Option flag usage:"
+echo "# --neverfail"
+echo "#  Don't stop the build if a project returns an error code."
+echo "#"
+echo "# --clean"
+echo "#  Run 'gradle clean' instead of the run-example.bsh"
+echo "#  script in each project."
+echo "############################################################"
+echo ""
+sleep 2
+
+for i in `find . ! -iname ".gradle" ! -iname ".git" -type d -depth 1`
+do
+    pushd $i
+    
+    if test "$1" == "--clean"
+    then
+        gradle clean
+    else
+        run-example.bsh
+    
+        # Test for failure
+        BUILD_RESULT="$?"
+        echo ""
+        echo "  +++++++++++++++++++++++++++++++++++++"
+        echo "  SCRIPTED BUILD RESULT: $BUILD_RESULT"
+        echo "  +++++++++++++++++++++++++++++++++++++"
+        echo ""
+        
+        if test "$BUILD_RESULT" != "0"
+        then
+            echo "**********************************************************************"
+            echo "* A sub-build in:"
+            echo "* $PWD"
+            echo "* has FAILED."
+            
+            if test "$1" == "--neverfail"
+            then
+                echo "* Build is CONTINUING anyway per the -neverfail flag."
+                echo "**********************************************************************"
+                echo ""
+                sleep 4
+            else
+                echo "* Build has been halted."
+                echo "**********************************************************************"
+                exit 1
+            fi
+        fi
+    fi
+    
+    popd
+done

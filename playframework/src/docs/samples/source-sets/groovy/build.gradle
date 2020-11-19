@@ -1,0 +1,49 @@
+plugins {
+    id 'org.gradle.playframework' version '0.10'
+}
+
+repositories {
+    jcenter()
+    maven {
+        name "lightbend-maven-release"
+        url "https://repo.lightbend.com/lightbend/maven-releases"
+    }
+    ivy {
+        name "lightbend-ivy-release"
+        url "https://repo.lightbend.com/lightbend/ivy-releases"
+        layout "ivy"
+    }
+}
+
+dependencies {
+    implementation 'commons-lang:commons-lang:2.6'
+    testImplementation "com.google.guava:guava:17.0"
+}
+
+// tag::add-source-directories[]
+sourceSets {
+    main {
+        scala {
+            srcDir 'additional/java'
+        }
+        javaScript {
+            srcDir 'additional/javascript'
+            exclude '**/old_*.js'
+        }
+    }
+}
+// end::add-source-directories[]
+
+sourceSets {
+    main {
+        scala {
+            srcDir 'extra/java'
+        }
+        twirl {
+            srcDir 'extra/twirl'
+        }
+        routes {
+            srcDir 'extra/routes'
+        }
+    }
+}

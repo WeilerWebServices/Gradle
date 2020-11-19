@@ -1,0 +1,24 @@
+Example usecase -----
+
+Checkstyle performance analysis:
+At one point in time, Checkstyle mysteriously started taking longer. Why did this happen? When *exactly* did this happen?
+
+Schema ----
+Table 1 - Builds
+    (Build scan list page)
+    user
+    project
+    console log (lower priority)
+
+Table 2 - Task Executions
+    (Deep dive into a single build page)
+    path
+    taskId
+    buildId (foreign key into builds table)
+    startTime
+    finishTime
+    duration
+    status (pass/fail)
+
+Note ----
+Large parallel build start/stop events for a given task may be interleaved, must keep track of task ID to correctly correlate

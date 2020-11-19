@@ -1,0 +1,14 @@
+plugins {
+    id 'swift-library'
+    id 'xcode'
+    id 'xctest'
+}
+
+group = 'org.gradle.swift-samples'
+version = '1.0'
+
+library {
+    dependencies {
+        api 'org.gradle.swift-samples:list:1.0'
+    }
+}

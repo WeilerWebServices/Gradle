@@ -1,0 +1,66 @@
+apply plugin: 'kotlin'
+
+configureJvmProject(project)
+configurePublishing(project)
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.fork = false
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    compile project(':kotlin-gradle-plugin-api')
+    compile project(':kotlin-gradle-plugin-model')
+
+    compile kotlinStdlib()
+    compileOnly project(':compiler')
+    compileOnly project(':kotlin-noarg-compiler-plugin')
+
+    compileOnly gradleApi()
+
+    testCompile gradleApi()
+    testCompile "junit:junit:4.12"
+}
+
+evaluationDependsOn(":kotlin-noarg-compiler-plugin")
+
+tasks.withType(project.compileKotlin.class) {
+    kotlinOptions.languageVersion = "1.2"
+    kotlinOptions.apiVersion = "1.2"
+    kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
+}
+
+jar {
+    from(project(":kotlin-noarg-compiler-plugin").sourceSets.main.output.classesDirs)
+    from(project(":kotlin-noarg-compiler-plugin").sourceSets.main.output.resourcesDir)
+    manifestAttributes(manifest, project)
+}
+
+ArtifactsKt.runtimeJar(project, EmbeddableKt.rewriteDepsToShadedCompiler(project, jar, {}), {})
+
+artifacts {
+    archives sourcesJar
+}
+
+javadocJar()
+
+pluginBundle {
+    plugins {
+        kotlinNoargPlugin {
+            id = 'org.jetbrains.kotlin.plugin.noarg'
+            description = displayName = 'Kotlin No Arg compiler plugin'
+        }
+        kotlinJpaPlugin {
+            id = 'org.jetbrains.kotlin.plugin.jpa'
+            description = displayName = 'Kotlin JPA compiler plugin'
+        }
+    }
+}
+
+test.executable = "${JDK_18}/bin/java"

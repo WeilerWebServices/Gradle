@@ -1,0 +1,10 @@
+plugins {
+    id 'swift-library'
+}
+
+library {
+    module = "LinuxConsole"
+    targetMachines = [
+        machines.linux
+    ]
+}

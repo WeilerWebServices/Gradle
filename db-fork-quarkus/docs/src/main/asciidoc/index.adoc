@@ -1,0 +1,81 @@
+include::./attributes.adoc[]
+= {project-name}
+
+include::quarkus-intro.adoc[tag=intro]
+
+== Getting Started
+
+* link:getting-started-guide.html[Getting Started]
+* link:building-native-image-guide.html[Building Native Executable]
+* link:kubernetes-guide.html[Deploy Application on Kubernetes]
+* link:getting-started-knative-guide.html[Deploy as Knative Application on Kubernetes]
+* link:tooling.html[Project Scaffolding and IDE]
+
+== Other guides
+
+* link:tooling.html[Use tooling with Quarkus]
+* link:application-configuration-guide.html[Configuring Your Application]
+* link:logging-guide.html[Configuring Logging]
+* link:application-lifecycle-events-guide.html[Application Initialization and Termination]
+* link:rest-json-guide.html[Writing JSON REST Services]
+* link:scheduled-guide.html[Schedule Periodic Tasks]
+* link:websocket-guide.html[Using Websockets]
+* link:validation-guide.html[Validation with Hibernate Validator]
+* link:transaction-guide.html[Using Transactions]
+* link:hibernate-orm-guide.html[Using Hibernate ORM]
+* link:hibernate-orm-panache-guide.html[Simplified Hibernate ORM with Panache]
+* link:rest-client-guide.html[Using REST Client]
+* link:native-and-ssl-guide.html[Native executables and SSL]
+* link:opentracing-guide.html[Using OpenTracing]
+* link:security-guide.html[Using Security]
+* link:jwt-guide.html[Using JWT RBAC Security]
+* link:infinispan-client-guide.html[Using Infinispan Client]
+* link:spring-di-guide.html[Using our Spring Dependency Injection compatibility layer]
+* link:kotlin.html[Using Kotlin]
+* link:health-guide.html[Using MicroProfile Health]
+* link:fault-tolerance-guide.html[Using Fault Tolerance]
+* link:extension-authors-guide.html[Write Your Own Extension] _(advanced)_
+* link:writing-native-applications-tips.html[Tips for writing native applications] _(advanced)_
+* link:performance-measure.html[Measuring Performance] _(advanced)_
+* link:cdi-reference.html[Contexts and Dependency Injection] _(advanced)_
+
+* link:faq.html[FAQs]
+
+== Recommended tooling
+
+_Mandatory:_
+
+* https://adoptopenjdk.net/[Java - OpenJDK 1.8+]
+* https://maven.apache.org/install.html[Maven 3.5+]
+
+_Recommended:_
+
+* https://docs.docker.com/install/[Docker]
+* http://www.graalvm.org/docs/getting-started/[GraalVM {graalvm-version}]
+
+
+== Feedback, looking for help?
+
+You can contact the project team using:
+
+* the https://groups.google.com/forum/#!forum/quarkus-dev[quarkus-dev Google Groups]
+* chat using https://quarkus.zulipchat.com[Zulip]
+
+Your help is more than welcome! Don't hesitate to join the crowd.
+
+== Contributing
+
+Check the https://github.com/quarkus-project/quarkus/blob/master/CONTRIBUTING.md[Contribution Guide] for details on reporting issues and the process for submitting pull requests.
+
+Every contribution is valuable.
+It can be a bug report, an example application, a feature request, a fix in the documentation or just feedback.
+
+== Versioning
+
+We are in an incubation phase, so we don't have a 1.0.0 release yet.
+
+== License
+
+This project is licensed under the Apache Software License 2.0 - see the https://github.com/quarkus-project/quarkus/blob/master/LICENSE.txt[License file] for details.
+
+

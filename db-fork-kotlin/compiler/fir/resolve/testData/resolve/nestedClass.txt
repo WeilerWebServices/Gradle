@@ -1,0 +1,22 @@
+FILE: nestedClass.kt
+    public abstract class Base : R|kotlin/Any| {
+        public constructor(s: R|kotlin/String|): super<R|kotlin/Any|>()
+
+        public final val s: R|kotlin/String|
+            public get(): R|kotlin/String|
+
+    }
+    public final class Outer : R|kotlin/Any| {
+        public constructor(): super<R|kotlin/Any|>()
+
+        public final class Derived : R|Base| {
+            public constructor(s: R|kotlin/String|): super<R|Base|>(R|<local>/s|)
+
+        }
+
+        public final object Obj : R|Base| {
+            public constructor(): super<R|Base|>(String())
+
+        }
+
+    }

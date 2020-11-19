@@ -1,0 +1,55 @@
+subprojects { subproject ->
+    apply plugin: 'xcode'
+
+    group = 'org.gradle.swift-samples'
+
+    // Move the build directories for all projects into a single top-level directory
+    buildDir = rootProject.file("build/${subproject.name.capitalize()}")
+
+    components.withType(ProductionCppComponent) {
+        // By convention, source files are located in the root directory/Sources/<module>
+        source.from rootProject.file("Sources/${subproject.name.capitalize()}")
+        privateHeaders.from rootProject.file("Sources/${subproject.name.capitalize()}/include")
+    }
+    components.withType(CppLibrary) {
+        // By convention, public header files are located in the root directory/Sources/<module>/include
+        publicHeaders.from rootProject.file("Sources/${subproject.name.capitalize()}/include")
+    }
+}
+
+project(':app') {
+    apply plugin: 'cpp-application'
+
+    application {
+        // Configure the dependencies of the executable
+        dependencies {
+            implementation project(':utilities')
+        }
+    }
+}
+
+project(':utilities') {
+    apply plugin: 'cpp-library'
+
+    library {
+        // Configure the dependencies of the library
+        dependencies {
+            api project(':list')
+        }
+    }
+}
+
+project(':list') {
+    apply plugin: 'cpp-library'
+}
+
+// Move the build directories for all projects into a single top-level directory
+allprojects { p ->
+    // Work around for https://github.com/gradle/gradle-native/issues/376
+    // TODO: Remove this once issue has been fixed.
+    tasks.withType(AbstractLinkTask).configureEach {
+        doFirst {
+            p.projectDir.mkdirs()
+        }
+    }
+}

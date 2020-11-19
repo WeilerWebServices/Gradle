@@ -1,0 +1,23 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    compile project(':kotlin-stdlib-jdk8')
+    testCompile project(':kotlin-test:kotlin-test-junit')
+}
+
+sourceSets {
+    test.kotlin.srcDir 'test'
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jdkHome = JDK_18
+        freeCompilerArgs = [
+                "-Xuse-experimental=kotlin.ExperimentalUnsignedTypes"
+        ]
+    }
+}
+
+test {
+    executable = "$JDK_18/bin/java"
+}

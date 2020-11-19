@@ -1,0 +1,22 @@
+import com.petebevin.markdown.MarkdownProcessor
+
+buildscript {
+  repositories { 
+    mavenRepo url: 'http://scala-tools.org/repo-releases'
+  }
+
+  dependencies { 
+    classpath 'org.markdownj:markdownj:0.3.0-1.0.2b4'
+  }
+}
+
+task markdown(type: Copy) {
+  def markdownProcessor = new MarkdownProcessor()
+  into 'build/poems'
+  from 'source'
+  include 'todo.md'
+  rename { it - '.md' + '.html'}
+  filter { line ->
+    markdownProcessor.markdown(line)
+  }
+}

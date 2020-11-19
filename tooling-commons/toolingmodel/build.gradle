@@ -1,0 +1,41 @@
+// publish to private Gradleware repository
+if (hasProperty('GRADLE_REPO_URL')) {
+  apply plugin: 'maven-publish'
+
+  publishing {
+    repositories {
+      maven {
+        name = 'privateGradle'
+        url GRADLE_REPO_URL
+        credentials {
+          username GRADLE_REPO_USER
+          password GRADLE_REPO_PASSWORD
+        }
+      }
+    }
+    publications {
+      mavenJava(MavenPublication) {
+        from components.java
+        artifact sourcesJar {
+          classifier "sources"
+        }
+      }
+    }
+  }
+}
+
+dependencies {
+  compile project(':toolingutils')
+  compile project(':toolingclient')
+  compile "org.gradle:gradle-tooling-api:$toolingApiVersion"
+  compile "com.google.guava:guava:$guavaVersion"
+  compile "org.slf4j:slf4j-api:$slf4jVersion"
+  testCompile project(':testing-crossversion')
+  testCompile project(':testing-junit')
+  testCompile "org.spockframework:spock-core:$spockVersion"
+  testCompile "nl.jqno.equalsverifier:equalsverifier:$equalsverifierVersion"
+  testRuntime "cglib:cglib-nodep:$cglibVersion"
+  testRuntime "org.objenesis:objenesis:$objenesisVersion"
+}
+
+description = "IDE-agnostic Model component of the Commons project of the Gradle Tooling Platform."

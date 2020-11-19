@@ -1,0 +1,124 @@
+[background-color="#01303a"]
+== Strategies for publication
+
+=== Declared vs published
+
+* Your build file declares a number of _versions_
+** e.g., `commons-lang3:3.3`
+* Not necessarily the resolved one:
+** e.g., `commons-lang3:3.3 -> 3.4 (conflict resolution)`
+
+=== Declared vs published
+
+* What about dynamic dependencies?
+* e.g. `commons-lang3:3.+`
+* Gradle lets you choose between two modes: declared or resolved versions
+** defaults to the _declared versions_
+
+=== Declared versions
+
+* Pros
+** Effectively what you need
+** Maximum expressiveness thanks to rich versions
+* Cons
+** Requires diligence in what is declared
+** Result may be very different
+
+=== Resolved versions
+
+* Pros
+** What you resolve is what you get
+** Stable resolution for consumers (no dynamic)
+* Cons
+** Lossy mapping (ranges disappear, for example)
+** Maybe unintentional
+** Always approximate (what resolution to use?)
+** Maybe incorrect (e.g. substitutions)
+
+=== Resolved rich versions
+
+* Makes the mapping lossy for Gradle as well
+* flattens to `require` or `strictly`
+** if the declared version is strictly, the resolved is as well
+
+=== How to
+
+```
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+}
+
+```
+
+=== Relationship with dependency locking
+
+* Locking guarantees same resolution result
+* But lock files are _unknown_ to consumers
+* Using locking + resolved result makes sense
+
+=== Future work on resolved versions
+
+* More strategies
+** still publish ranges, _prefer_ the resolved version
+** fail if resolved version disagrees with declared version
+
+[background-color="#01303a"]
+=== Release strategies
+
+=== Gradle is agnostic
+
+* Version is _simply_ a `project` property
+* Open as to _where_ to publish
+
+=== Which version to release?
+
+* `-SNAPSHOT`, based on the Maven convention
+** _Changing_ aspect is a problem for reproducibility
+* Unique releases
+** Keeping up with releases requires work / automation
+
+=== Where to publish?
+
+* Maven local repository
+** Convenient but not without issues
+** Consider using repository content filtering to limit its impact
+* Repository (local or remote)
+** Requires more infrastructure
+
+=== Strategies
+
+* Live with the `-SNAPSHOT` limitations
+* Use dynamic versions and locking for easier automated updates
+** Add publication of resolved versions
+
+=== Integrations
+
+* During development, integration can use:
+** Publication and releases
+** Composite builds
+** Source dependencies
+
+=== Plugins can help
+
+* `nebula-release-plugin` supports multiple release types
+** Integrates with Git
+** final, candidate, snapshots, unique snapshots, ...
+** Give it a try!
+
+=== Multi repository development
+
+This is really where all these concepts come into play _inside_ an organisation.
+
+Stay tuned for a future webinar on this, and how Gradle can help!
+

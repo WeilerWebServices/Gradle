@@ -1,0 +1,90 @@
+plugins {
+    id "java-gradle-plugin"
+    id "com.jfrog.artifactory" version "4.4.9"
+}
+
+apply plugin: "idea"
+apply plugin: "groovy"
+apply plugin: "maven-publish"
+
+group = "org.gradle.caching.hazelcast"
+version = "0.12"
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+gradlePlugin {
+    plugins {
+        hazelcastPlugin {
+            id = "org.gradle.caching.hazelcast"
+            implementationClass = "org.gradle.caching.hazelcast.HazelcastPlugin"
+        }
+    }
+}
+
+def localRepo = file("$buildDir/repo")
+
+publishing {
+    publications {
+        jar(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+task createClasspathManifest {
+    def outputDir = file("$buildDir/$name")
+
+    inputs.files sourceSets.main.runtimeClasspath
+    outputs.dir outputDir
+
+    doLast {
+        outputDir.mkdirs()
+        file("$outputDir/plugin-classpath.txt").text = sourceSets.main.runtimeClasspath.join("\n")
+    }
+}
+
+dependencies {
+    compile "com.hazelcast:hazelcast-client:3.6.4"
+    testCompile "junit:junit:4.12"
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.4@jar"
+    testCompile "com.hazelcast:hazelcast:3.6.4"
+    testRuntime files(createClasspathManifest)
+}
+
+// --- Configure publications ------------------------------------------
+
+def buildTagFor(String version) {
+    switch (version.substring(version.lastIndexOf("-") + 1)) {
+        case "SNAPSHOT":
+            return "snapshot"
+        case ~/M\d+[a-z]*$/:
+            return "milestone"
+        default:
+            return "release"
+    }
+}
+
+def targetRepoKey = "libs-${buildTagFor(project.version)}s-local"
+
+artifactory {
+    contextUrl = "https://repo.gradle.org/gradle"
+    publish {
+        repository {
+            repoKey = targetRepoKey
+            username = project.findProperty("artifactory_user") ?: "nouser"
+            password = project.findProperty("artifactory_password") ?: "nopass"
+            maven = true
+        }
+        defaults {
+            publications("jar")
+        }
+    }
+    resolve {
+        repoKey = "repo"
+    }
+}

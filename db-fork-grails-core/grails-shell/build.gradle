@@ -1,0 +1,55 @@
+apply plugin:'application'
+
+mainClassName = "org.grails.cli.GrailsCli"
+
+repositories {
+    jcenter()
+}
+
+ext {
+//    gradleToolingApiVersion = gradle.gradleVersion
+    gradleToolingApiVersion = '5.0'
+}
+
+dependencies {
+    compile project(":grails-bootstrap")
+    compile project(":grails-gradle-model")
+    compile "org.apache.ant:ant:$antVersion"
+    compile "org.codehaus.groovy:groovy-ant:$groovyVersion"
+    compile "org.codehaus.groovy:groovy-json:$groovyVersion"
+    compile "org.codehaus.groovy:groovy-jmx:$groovyVersion"
+    compile "org.fusesource.jansi:jansi:$jansiVersion"
+    compile "jline:jline:$jlineVersion"
+    compile "org.gradle:gradle-tooling-api:$gradleToolingApiVersion"
+
+    compile("org.springframework.boot:spring-boot-cli:$springBootVersion") {
+        exclude group: "org.codehaus.groovy", module: "groovy"
+    }
+
+    testCompile "net.sf.expectit:expectit-core:0.5.0"
+    testCompile "com.github.jnr:jnr-posix:3.0.6"
+
+    runtime "org.slf4j:slf4j-simple:$slf4jVersion"
+    runtime "org.codehaus.plexus:plexus-component-api:1.0-alpha-33"
+
+}
+
+eclipse {
+    classpath {
+       file {
+           whenMerged { classpath ->
+                classpath.entries.find { entry -> entry.kind == 'src' && entry.path == "src/test/resources" }?.excludes=["profiles-repository/**", "gradle-sample/**"]
+           }
+       }
+    }
+}
+
+apply from: "../gradle/integration-test.gradle"
+
+integrationTest {
+    // jline doesn't use jline.terminal system property when TERM is dumb so use different TERM value for tests
+    // https://github.com/jline/jline2/blob/6a1b6bf/src/main/java/jline/TerminalFactory.java#L54-L57
+    environment 'TERM', 'xterm'
+    // execute in single thread
+    maxParallelForks = 1
+}

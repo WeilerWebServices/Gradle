@@ -1,0 +1,40 @@
+import org.gradle.internal.os.OperatingSystem
+
+plugins {
+    id 'cpp-application'
+    id 'xcode'
+    id 'visual-studio'
+}
+
+def libIncludePath = file('../simple-library/src/main/public')
+
+def libDebugLib = file(OperatingSystem.current().getSharedLibraryName('../simple-library/build/lib/main/debug/list'))
+def libReleaseLib = file(OperatingSystem.current().getSharedLibraryName('../simple-library/build/lib/main/release/list'))
+
+def libDebugLinkLib = file(OperatingSystem.current().getLinkLibraryName('../simple-library/build/lib/main/debug/list'))
+def libReleaseLinkLib = file(OperatingSystem.current().getLinkLibraryName('../simple-library/build/lib/main/release/list'))
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (!taskGraph.hasTask(":help")) {
+        if (!libDebugLib.exists() || !libReleaseLib.exists()) {
+            throw new GradleException("Please build project at ${file('../simple-library')} with: './gradlew -p ../simple-library assembleRelease assembleDebug'")
+        }
+        if (!libIncludePath.exists()) {
+            throw new GradleException("Please ensure in include path: ${libIncludePath} exists")
+        }
+    }
+}
+
+components.main.binaries.whenElementFinalized { binary ->
+    project.dependencies {
+        if (binary.optimized) {
+            add(binary.includePathConfiguration.name, files(libIncludePath))
+            add(binary.linkLibraries.name, files(libReleaseLinkLib))
+            add(binary.runtimeLibraries.name, files(libReleaseLib))
+        } else {
+            add(binary.includePathConfiguration.name, files(libIncludePath))
+            add(binary.linkLibraries.name, files(libDebugLinkLib))
+            add(binary.runtimeLibraries.name, files(libDebugLib))
+        }
+    }
+}

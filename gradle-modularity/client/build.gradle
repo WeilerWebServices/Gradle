@@ -1,0 +1,24 @@
+plugins {
+    id 'jvm-component'
+    id 'java-lang'
+}
+
+model {
+    components {
+        client(JvmLibrarySpec) {
+            sources {
+                java {
+                    source.srcDir 'src/client/java'
+
+                    dependencies {
+                        project ':service' library 'service'
+                    }
+                }
+            }
+            targetPlatform 'java6'
+            targetPlatform 'java7'
+            targetPlatform 'java8'
+            targetPlatform 'java9'
+        }
+    }
+}

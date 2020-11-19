@@ -1,0 +1,38 @@
+apply plugin: 'cpp'
+
+libraries {
+    hello {}
+}
+
+executables {
+    main {}
+}
+
+sources {
+    main {
+        cpp {
+            lib libraries.hello
+        }
+    }
+}
+
+binaries.all {
+    cppCompiler.define "NDEBUG"
+
+    if (toolChain in Gcc) {
+        cppCompiler.args "-O2", "-fno-access-control"
+        linker.args "-S"
+    }
+    if (toolChain in VisualCpp) {
+        cppCompiler.args "/Zi"
+        linker.args "/DEBUG"
+    }
+}
+
+binaries.withType(SharedLibraryBinary) {
+    if (toolChain in VisualCpp) {
+        cppCompiler.define "DLL_EXPORT"
+    }
+}
+
+

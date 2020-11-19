@@ -1,0 +1,82 @@
+[background-color="#01303a"]
+== Publishing Basics
+
+=== Publishing building blocks
+
+* The plugins: `maven-publish` and `ivy-publish`
+* The concept of a _publication_
+* One or more target repositories
+
+[WARNING]
+====
+This presentation does not cover the _legacy_ publication system, deprecated in Gradle 6.0
+====
+
+[background-color="#01303a"]
+=== Basic publishing demo
+
+=== Plugin and basic information
+
+[source,kotlin]
+----
+include::../{sourcedir}/publish-intro/build.gradle.kts[lines=9..11;13..16]
+----
+
+=== Adding the publication
+
+[source,kotlin]
+----
+include::../{sourcedir}/publish-intro/build.gradle.kts[lines=36..41;53]
+----
+
+=== Adding the repository
+
+[source,kotlin]
+----
+include::../{sourcedir}/publish-intro/build.gradle.kts[lines=36;43..47;52..53]
+----
+
+Multiple repositories can be defined that way, in case you need to publish to more than one location.
+
+=== Adding a local test repository
+
+[source,kotlin]
+----
+include::../{sourcedir}/publish-intro/build.gradle.kts[lines=48..51,indent=0]
+----
+
+This test repository can be useful to review the produced publication files, before uploading them to their final destination.
+
+=== Publication tasks
+
+The publication plugins will define a number of tasks based on the declared _publications_ and _repositories_:
+
+* `publish<Publication>PublicationTo<Repository>Repository` to publish a _specific_ publication to a _specific_ repository
+* `publishAllPublicationsTo<Repository>Repository` to publish _all_ publications to a _specific_ repository
+* `publish` to publish _all_ publications to _all_ repositories
+
+=== More publication tasks
+
+* `publishToMavenLocal` to publish _all maven_ publications to the Maven local repository
+** This is _not_ executed when using `publish`
+* `generate<MetadataType>FileFor<Publication>Publication` to generate the metadata file (Ivy, Maven or Gradle) for a _specific_ publication.
+
+=== Signing publications
+
+* Requires the `signing` plugin
+
+[source,kotlin]
+----
+include::../{sourcedir}/publish-intro/build.gradle.kts[lines=55..59]
+----
+
+=== Publication result
+
+* The _artifacts_ of the selected component
+** Usually the JAR file for a Java project
+* The _metadata_ of the selected component
+** Maven or Ivy depending on the repository type
+** Gradle Module Metadata by default starting with Gradle 6.0
+* Extra files
+** Checksums: MD5, SHA1, SHA256, SHA512 (last two with Gradle 6.0)
+** Signatures if signing configured

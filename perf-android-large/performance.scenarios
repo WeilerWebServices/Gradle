@@ -1,0 +1,105 @@
+abiChange {
+  tasks = [":phthalic:assembleDebug"]
+  buck {
+    targets = ["//phthalic:bin_debug"]
+  }
+  apply-abi-change-to = "outissue/carnally/src/main/java/com/studio/carnally/Thing.java"
+}
+
+abiChangeWithInstantRun {
+  tasks = [":phthalic:assembleDebug"]
+  apply-abi-change-to = "outissue/carnally/src/main/java/com/studio/carnally/Thing.java"
+  gradle-args = [
+    "-Pandroid.injected.invoked.from.ide=true",
+    "-Pandroid.injected.build.api=25",
+    "-Pandroid.injected.build.density=420dpi",
+    "-Pandroid.injected.build.abi=x86",
+    "-Pandroid.injected.restrict.variant.name=debug",
+    "-Pandroid.injected.restrict.variant.project=:phthalic",
+    "-Pandroid.optional.compilation=INSTANT_DEV"
+  ]
+}
+
+nonAbiChange {
+  tasks = [":phthalic:assembleDebug"]
+  buck {
+    targets = ["//phthalic:bin_debug"]
+  }
+  apply-non-abi-change-to = "outissue/carnally/src/main/java/com/studio/carnally/Thing.java"
+}
+
+nonAbiChangeWithInstantRun {
+  tasks = [":phthalic:assembleDebug"]
+  apply-non-abi-change-to = "outissue/carnally/src/main/java/com/studio/carnally/Thing.java"
+  gradle-args = [
+    "-Pandroid.injected.invoked.from.ide=true",
+    "-Pandroid.injected.build.api=25",
+    "-Pandroid.injected.build.density=420dpi",
+    "-Pandroid.injected.build.abi=x86",
+    "-Pandroid.injected.restrict.variant.name=debug",
+    "-Pandroid.injected.restrict.variant.project=:phthalic",
+    "-Pandroid.optional.compilation=INSTANT_DEV"
+  ]
+}
+
+androidManifestChange {
+  tasks = [":phthalic:assembleDebug"]
+  buck {
+    targets = ["//phthalic:bin_debug"]
+  }
+  apply-android-manifest-change-to = "./outissue/carnally/src/main/AndroidManifest.xml"
+}
+
+androidResourceChange {
+  tasks = [":phthalic:assembleDebug"]
+  buck {
+    targets = ["//phthalic:bin_debug"]
+  }
+  apply-android-resource-change-to = "./outissue/carnally/src/main/res/values/strings.xml"
+}
+
+androidResourceValueChange {
+  tasks = [":phthalic:assembleDebug"]
+  buck {
+    targets = ["//phthalic:bin_debug"]
+  }
+  apply-android-resource-value-change-to = "./outissue/carnally/src/main/res/values/strings.xml"
+}
+
+classpathResourceChange {
+  tasks = [":phthalic:assembleDebug"]
+  buck {
+    targets = ["//phthalic:bin_debug"]
+  }
+  apply-property-resource-change-to = "./outissue/caricetum/concher/src/main/resources/app.properties"
+}
+
+upToDateSingleVariant {
+  tasks = [":phthalic:assembleDebug"]
+  buck {
+    targets = ["//phthalic:bin_debug"]
+  }
+}
+
+rebuildSingleVariant {
+  cleanup-tasks = ["clean"]
+  tasks = [":phthalic:assembleDebug"]
+}
+
+upToDateAllVariants {
+  tasks = ["assemble"]
+  gradle-args = ["-x", "lintVitalRelease"]
+  buck {
+    type = "all"
+  }
+}
+
+rebuildAllVariants {
+  cleanup-tasks = ["clean"]
+  tasks = ["assemble"]
+  gradle-args = ["-x", "lintVitalRelease"]
+}
+
+help {
+  tasks = ["help"]
+}

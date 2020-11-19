@@ -1,0 +1,21 @@
+apply plugin: 'cpp'
+
+libraries {
+    greeting {
+        binaries.withType(SharedLibraryBinary) {
+            cppCompiler.define 'DLL_EXPORT'
+        }
+    }
+}
+
+executables {
+    helloWorld { }
+}
+
+sources {
+    helloWorld {
+        cpp {
+            lib libraries.greeting
+        }
+    }
+}

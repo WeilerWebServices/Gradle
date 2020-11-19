@@ -1,0 +1,48 @@
+{
+  "replace" : [],
+  "deny": [],
+  "reject": [],
+  "align": [],
+  "substitute": [
+    {
+      "module" : "sustitutionrule:directsubstitute:2.0.0",
+      "with" : "sustitutionrule:directsubstitute:2.1.0",
+      "reason" : "version 2.0.0 was accidentally released from dev_branch",
+      "author" : "Person McPerson <person@email.com>",
+      "date" : "2017-12-06"
+    }
+  ]
+}
+
+/* in platform */
+variant {
+    constraints {
+        "sustitutionrule:substitute") {
+            reject "2.0.0"
+        }.because("2.0.0 is broken, use >= 2.1.0")
+    }
+}
+
+/* in buildscript */
+// Robust buildscript: doesn't require update
+prefer "sustitutionrule:directsubstitute:[2.0,3)"
+
+// Hard-coded buildscript: must be updated
+prefer "sustitutionrule:directsubstitute:2.0.0"
+
+// IF 2.1.0 is broken
+/* in platform */
+variant {
+    constraints {
+        "sustitutionrule:substitute") {
+            reject "2.1.0"
+        }.because("2.1.0 is broken, use an earlier version")
+    }
+}
+
+/* in buildscript */
+// Robust buildscript: doesn't require update
+prefer "sustitutionrule:directsubstitute:[2.0,3)"
+
+// Hard-coded buildscript: must be updated
+prefer "sustitutionrule:directsubstitute:2.1.0"

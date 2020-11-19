@@ -1,0 +1,10 @@
+plugins {
+    id 'swift-library'
+}
+
+library {
+    module = "MacOsConsole"
+    targetMachines = [
+        machines.macOS
+    ]
+}

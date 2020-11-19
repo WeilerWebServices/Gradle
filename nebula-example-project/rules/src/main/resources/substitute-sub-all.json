@@ -1,0 +1,55 @@
+{
+  "replace" : [],
+  "align": [],
+  "substitute": [
+    {
+      "module" : "sustitutionrule:sub-all",
+      "with" : "sustitutionrule:sub-core:1.0.0",
+      "reason" : "sub-all is pure evil",
+      "author" : "Person McPerson <person@email.com>",
+      "date" : "2017-12-06"
+    }
+  ],
+  "deny": [],
+  "reject": []
+}
+
+/* in platform */
+variant {
+    constraints {
+        "sustitutionrule:sub-all") {
+            rejectAll()
+        }.because("sub-all is pure evil")
+    }
+}
+
+// IF we make a 'pending dependency' trigger capability resolution
+capability {
+    capability("groovy-core") {
+        providedBy "groovy-all"
+        providedBy "groovy-core"
+
+        prefer "groovy-core"
+    }
+    capability("groovy-json") {
+        providedBy "groovy-all"
+        providedBy "groovy-json"
+
+        prefer "groovy-json"
+    }
+    constraints {
+        "groovy-core:1.0.0"
+        "groovy-json:1.0.0"
+    }
+}
+
+/* in buildscript */
+// Buildscript must be updated
+prefer "sustitutionrule:sub-all:1.0.0"
+
+/* in component metadata rule */
+modules {
+    allVariants {
+        withDependency('sustitutionrule:sub-all').useTarget("sustitutionrule:sub-core:1.0.0")
+    }
+}

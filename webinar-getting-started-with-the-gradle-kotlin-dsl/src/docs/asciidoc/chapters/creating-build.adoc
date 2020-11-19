@@ -1,0 +1,261 @@
+
+[background-color="#01303a"]
+== Creating a Gradle Kotlin DSL build
+
+=== Creating a Gradle Kotlin DSL build
+
+* With Gradle locally installed
+* `gradle init`
+
+[%notitle,background-color="#000000",background-video="images/movies/gradle-init.mp4",background-size="contain",background-video-loop=true,background-video-muted=true]
+=== gradle init
+
+[.notes]
+--
+* `init` gives several templates to choose from
+* here we choose a Kotlin application using the Gradle Kotlin DSL
+--
+
+=== Creating a Gradle Kotlin DSL build
+
+* Without Gradle locally installed
+* From a Web UI
+* https://gradle-initializr.cleverapps.io/
+
+[.notes]
+--
+* the same can be done without having Gradle installed
+* by https://gradle-initializr.cleverapps.io/
+--
+
+[%notitle,background-color="#000000",background-video="images/movies/gradle-initializr.mp4",background-size="contain",background-video-loop=true,background-video-muted=true]
+=== gradle initializr
+
+[.notes]
+--
+* which basically drives `gradle init`
+* and again we choose a Kotlin application using the Gradle Kotlin DSL with latest Gradle
+--
+
+=== Creating a Gradle Kotlin DSL build
+
+One-liner without Gradle installed
+
+[source,text]
+----
+➜ mkdir webinar-app \
+    && cd webinar-app \
+    && curl https://gradle-initializr.cleverapps.io/starter.zip \
+    -d type=kotlin-application \
+    -d dsl=kotlin \
+    -d projectName=webinar-app \
+    -d gradleVersion=5.3.1 \
+    -o webinar-app.zip \
+    && unzip -o webinar-app.zip \
+    && rm webinar-app.zip
+----
+
+=== Anatomy of the build
+
+[source,text]
+----
+.
+├── settings.gradle.kts
+├── build.gradle.kts
+├── gradlew
+├── gradlew.bat
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+└── src
+    ├── main
+    │   └── kotlin
+    │       └── *
+    └── test
+        └── kotlin
+            └── *
+----
+
+[.notes]
+--
+* In both cases the output is the same
+* the first thing to notice is the .kts script file extension
+* KTS stands for KoTlin Script
+* and that's how you opt-in to the Gradle Kotlin DSL
+--
+
+=== The settings script
+
+[source,text]
+----
+.
+├── settings.gradle.kts                 ⬅
+├── build.gradle.kts
+├── gradlew
+├── gradlew.bat
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+└── src
+    ├── main
+    │   └── kotlin
+    │       └── *
+    └── test
+        └── kotlin
+            └── *
+----
+
+
+=== `settings.gradle.kts`
+
+[source,kotlin]
+----
+rootProject.name = "webinar-app"
+----
+
+[.notes]
+--
+* controls the settings for the whole build
+* the most common thing to control is the project structure
+* other global build configurations such as build cache, where to find plugins, etc
+--
+
+=== The root project build script
+
+[source,text]
+----
+.
+├── settings.gradle.kts
+├── build.gradle.kts                    ⬅
+├── gradlew
+├── gradlew.bat
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+└── src
+    ├── main
+    │   └── kotlin
+    │       └── *
+    └── test
+        └── kotlin
+            └── *
+----
+
+=== `build.gradle.kts`
+
+[source,kotlin]
+----
+plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.3.21"
+    application
+}
+repositories {
+    jcenter()
+}
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+}
+application {
+    mainClassName = "webinar.app.AppKt"
+}
+----
+
+[.notes]
+--
+* the root project build script
+* we say `root` because in fact you could have many, in this case we have just one
+* it configures a Kotlin JVM application
+* sets up the repository where to find the dependencies
+* sets up the dependencies, if you want to know more about this important topic see the Dependency Management Fundamentals webinar
+* sets up the application entry point
+--
+
+=== The Gradle wrapper
+
+[source,text]
+----
+.
+├── settings.gradle.kts
+├── build.gradle.kts
+├── gradlew                             ⬅
+├── gradlew.bat                         ⬅
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar          ⬅
+│       └── gradle-wrapper.properties   ⬅
+└── src
+    ├── main
+    │   └── kotlin
+    │       └── *
+    └── test
+        └── kotlin
+            └── *
+----
+
+[.notes]
+--
+* the Gradle wrapper is a way for a build to declare/specify the version of Gradle it uses
+* the script will automatically download the declared Gradle distribution
+* makes it easy to get the build up and running (either in CI or some other developer's machine)
+* only requires a JVM to bootstrap the whole build
+--
+
+=== The project sources
+
+[source,text]
+----
+.
+├── settings.gradle.kts
+├── build.gradle.kts
+├── gradlew
+├── gradlew.bat
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+└── src
+    ├── main
+    │   └── kotlin
+    │       └── *                       ⬅
+    └── test
+        └── kotlin
+            └── *                       ⬅
+----
+
+[.notes]
+--
+* and as you might expect, the source code for the application and tests in the standard layout
+--
+
+=== Running the build
+
+*From the command line*
+
+*DEMO*
+
+[.notes]
+--
+* command line first
+* and here we just use the Gradle wrapper to execute the `run` task provided by the `application` plugin
+--
+
+=== Working with the build
+
+*Using an IDE*
+
+*DEMO*
+
+[.notes]
+--
+* POLL about IDE
+* show importing the build in an IDE
+* show run anything
+* mention the Gradle runner is now the default
+--
+
+

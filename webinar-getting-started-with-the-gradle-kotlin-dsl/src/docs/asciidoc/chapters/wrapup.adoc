@@ -1,0 +1,47 @@
+[background-color="#01303a"]
+== Wrap up
+
+=== What we learned
+
+[%step]
+* Creating a Gradle Kotlin DSL build with or without Gradle installed
+* Customizing builds
+[%step]
+** by configuring extensions and tasks contributed by plugins
+** by mixing Kotlin and Groovy build logic
+** by modularizing into projects
+* Organizing build logic using cross-configuration, `buildSrc` and shared plugins
+* Authoring plugins and DSLs
+[%step]
+** that play well with different DSLs and JVM languages
+** that support multiple Gradle versions
+
+
+=== Documentation links
+
+* link:https://gradle.github.io/webinar-getting-started-with-the-gradle-kotlin-dsl[This webinar slides]
+* link:https://github.com/gradle/webinar-getting-started-with-the-gradle-kotlin-dsl/tree/master/webinar-app[This webinar sample builds]
+* link:https://github.com/gradle/webinar-getting-started-with-the-gradle-kotlin-dsl[This webinar source]
+
+* link:https://docs.gradle.org/current/userguide/kotlin_dsl.html[Kotlin DSL Primer]
+* link:https://guides.gradle.org/migrating-build-logic-from-groovy-to-kotlin/[Kotlin DSL Migration Guide]
+
+* link:https://docs.gradle.org/current/userguide/userguide.html[Gradle User Manual]
+* link:https://gradle.org/guides/?q=Plugin%20Development[Plugin development tutorials]
+* link:https://gradle.com/blog/dependency-management-with-gradle-fundamentals/[Dependency Management with Gradle Part 1 – Fundamentals]
+
+
+[background-color="#01303a"]
+== Questions?
+
+[.notes]
+--
+* Upgrade Kotlin DSL version without upgrading Gradle?
+** NO
+* Distinguish build-logic and production Kotlin version
+** build-logic: let Gradle handle the Kotlin version by using either the `kotlin-dsl` or `embedded-kotlin` plugin
+** production code: business as usual
+* Dependency Management
+** You should refer to the Dependency Management documentation, webinar (they are using the Kotlin DSL)
+** There's nothing special about the Kotlin DSL from a dependency management pov
+--

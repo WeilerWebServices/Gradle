@@ -1,0 +1,5 @@
+FILE: reflectionClass.kt
+    public final val javaClass: R|java/lang/Class<kotlin/String>| = <getClass>(<Unresolved name: String>#).<Unresolved name: java>#
+        public get(): R|java/lang/Class<kotlin/String>|
+    public final val kotlinClass: R|kotlin/reflect/KClass<kotlin/String>| = <getClass>(<Unresolved name: String>#)
+        public get(): R|kotlin/reflect/KClass<kotlin/String>|

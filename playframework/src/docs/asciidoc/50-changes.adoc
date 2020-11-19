@@ -1,0 +1,60 @@
+== Change Log
+
+[discrete]
+=== v0.10 (2020-10-15)
+
+* Thank you to our community contributors:
+* https://github.com/cmsr[cmsr] - TwirlCompiler support for dependency injection
+* https://github.com/novokrest[novokrest] - NPE when compiling routes with Play 2.3.X 
+* https://github.com/clemstoquart[clemstoquart] - Fix deprecated code relying on ProjectLayout.configurableFiles()
+* https://github.com/arjunchhabra[arjunchhabra] - Add preliminary support for Play 2.7.X
+* https://github.com/JospehChiu[JospehChiu] - Release automation
+
+[discrete]
+=== v0.9 (2019-08-20)
+
+* Add workaround for multiple SLF4J bindings on classpath for runPlay 
+
+[discrete]
+=== v0.8 (2019-08-07)
+
+* Restore compatibility with Gradle 5.1.1 and added test coverage for Gradle 5.1.1-5.5.1
+
+[discrete]
+=== v0.7 (2019-08-02)
+
+* Update to build with Gradle 5.5.1
+* Use the `Provider`-API to carry dependencies for `PlayRun` instead of explicit dependencies.  Previously, `PlayRun` depended on `build` explicitly, which required tests to run before `PlayRun` could run.
+
+[discrete]
+=== v0.6 (2019-04-29)
+
+* Generate a proper Class-Path manifest entry with runtime classpath
+
+[discrete]
+=== v0.5 (2019-04-10)
+
+* IDEA plugin should allow users to modify source directories
+
+[discrete]
+=== v0.4 (2019-02-18)
+
+* Rework plugins to rely on Java/Scala plugin configurations
+
+[discrete]
+=== v0.3 (2019-02-08)
+
+* Move classes from package `org.gradle.scala.internal.reflect` from Gradle core into plugin code base.
+
+[discrete]
+=== v0.2 (2019-02-08)
+
+* Ensure compatibility with Gradle 5.2 ({uri-github-issues}/82[issue #82]).
+* Fix test code in basic and advanced samples ({uri-github-issues}/74[issue #74]).
+* Improve Javadoc for public API ({uri-github-issues}/80[issue #80]).
+* Samples can be run as standalone projects ({uri-github-issues}/76[issue #76]).
+
+[discrete]
+=== v0.1 (2018-12-14)
+
+* Initial version of plugin.

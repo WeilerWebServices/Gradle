@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+group = 'com.gradleware.samples'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.8.2'
+    compile 'commons-beanutils:commons-beanutils:1.8.3'
+    //groovy 'mule:mule-extras-groovy:1.+'
+      // ^ The "+" flexible definition of a version
+      //   requires Internet access
+    groovy 'mule:mule-extras-groovy:1.1.1'
+}

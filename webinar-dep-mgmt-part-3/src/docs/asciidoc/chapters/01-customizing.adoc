@@ -1,0 +1,105 @@
+[background-color="#01303a"]
+== Publishing additional artifacts
+
+=== Use cases
+
+* Publication of javadoc and sources JARs
+* Your project defines additional archives
+** Test fixtures
+** Optional features
+
+In all the cases above, we want to publish not only the _added artifact_ but also its relevant _metadata_.
+
+[background-color="#01303a"]
+=== Extra artifacts demo
+
+=== Publishing javadoc and sources
+
+[source,kotlin]
+----
+include::../{sourcedir}/publish-more/build.gradle.kts[lines=10..13]
+----
+
+* Produces _and_ attaches the JAR to the publication ...
+* As variants, with the right _variant attributes_
+
+=== Using test fixtures
+
+[source,kotlin]
+----
+include::../{sourcedir}/publish-more/build.gradle.kts[lines=1;4..5;19;28..29]
+----
+
+* Gives you an extra source set: `testFixtures`
+* Gives you configurations to declare dependencies: `testFixturesApi` and `testFixturesImplementation`
+* Creates the necessary configurations for compiling, running and consuming the test fixtures
+
+=== Publishing test fixtures
+
+> All wired for you.
+Nothing to do.
+
+Details in later sections
+
+=== Optional features
+
+* Additional features of your library, that may require:
+** Additional dependencies
+** Additional artifact
+* while still using a single project for development
+
+Test fixtures are one use case for this concept
+
+[background-color="#01303a"]
+=== Optional features demo
+
+=== Optional feature declaration
+
+[source,kotlin]
+----
+include::../{sourcedir}/publish-feature/build.gradle.kts[lines=13..17]
+----
+
+* Source set choice indicates whether optional aspect is bundled with the main JAR or as an additional artifact
+* Creates the configurations for dependency declarations and wires them properly
+
+=== Publishing a feature
+
+> All wired for you.
+Nothing to do.
+
+Details in later sections
+
+=== Consuming a feature
+
+[source,kotlin]
+----
+include::../{sourcedir}/consume-feature/build.gradle.kts[lines=16..20,indent=0]
+----
+
+* Selection happens through the use of _capabilities_
+
+=== Handling mutually exclusive features
+
+```kotlin
+java {
+    registerFeature("mysqlSupport") {
+        usingSourceSet(sourceSets["main"])
+        capability("org.gradle.demo", "producer-db-support", "1.0")
+        capability("org.gradle.demo", "producer-mysql-support", "1.0")
+    }
+    registerFeature("postgresSupport") {
+        usingSourceSet(sourceSets["main"])
+        capability("org.gradle.demo", "producer-db-support", "1.0")
+        capability("org.gradle.demo", "producer-postgres-support", "1.0")
+    }
+}
+```
+
+Since only one module can provide a given capability, sharing a capability forces consumer to chose only one capability provider.
+
+=== Complete documentation
+
+* https://docs.gradle.org/6.0-rc-1/userguide/java_testing.html#sec:java_test_fixtures[Test fixtures documentation]
+* https://docs.gradle.org/6.0-rc-1/userguide/feature_variants.html[Feature variants documentation]
+

@@ -1,0 +1,25 @@
+{
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "cSpell.words": [
+        "JNICALL",
+        "JNIEXPORT",
+        "LPOVERLAPPED",
+        "Ljava",
+        "jboolean",
+        "jchar",
+        "jclass",
+        "jfieldID",
+        "jint",
+        "jlong",
+        "jmethodID",
+        "jobject",
+        "jsize"
+    ],
+    "C_Cpp.dimInactiveRegions": false
+}

@@ -1,0 +1,59 @@
+:revnumber: {project-version}
+:example-caption!:
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../java]
+:navigation:
+:menu:
+:status:
+:title-slide-background-image: title.jpeg
+:title-slide-transition: zoom
+:title-slide-transition-speed: fast
+:icons: font
+
+= : Getting started with the Gradle Kotlin DSL
+
+Paul Merlin (@eskat0s) & Rodrigo B. de Oliveira (@rodrigobamboo) - Gradle Inc.
+
+== Who are we?
+
+image::who-s-who.png[height=250,width=586]
+
+Gradle Kotlin DSL Team
+
+== Who are you?
+
+* How are you using Gradle?
+* What is your primary programming language?
+
+include::chapters/about-gradle.adoc[]
+
+
+[background-color="#01303a"]
+== What type of application are you building?
+
+
+[background-color="#01303a"]
+== Agenda
+
+* Creating a Gradle Kotlin DSL build
+* Customizing the build
+* Organizing build logic
+* Authoring plugins and DSLs
+
+
+include::chapters/introduction.adoc[]
+
+include::chapters/creating-build.adoc[]
+
+include::chapters/customizing-build.adoc[]
+
+include::chapters/organizing-build.adoc[]
+
+include::chapters/authoring-plugins.adoc[]
+
+include::chapters/wrapup.adoc[]
+
+
+[background-color="#01303a"]
+== Thank you!
+

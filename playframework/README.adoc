@@ -1,0 +1,59 @@
+= Gradle Play Plugin image:https://travis-ci.org/gradle/playframework.svg?branch=master["Build Status", link="https://travis-ci.org/gradle/playframework"]  image:https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/gradle/playframework/org.gradle.playframework.gradle.plugin/maven-metadata.xml.svg?label=latest%20release["Latest release", link="https://plugins.gradle.org/plugin/org.gradle.playframework"]
+
+== Documentation 
+
+- https://gradle.github.io/playframework/[User manual]
+- https://gradle.github.io/playframework/api[Javadocs]
+- https://github.com/gradle/playframework/tree/master/src/docs/samples[Samples]
+
+== Development
+
+=== Minimum requirements
+
+To engage in the development of the plugin, follow the minimum requirements shown in the table below.
+
+[options="header"]
+|==========================
+|Tool    |Minimum Version
+|JDK     |Oracle JDK or OpenJDK 8.x, anything higher won't work with Scala 2.11
+|Gradle  |5.1 or higher
+|IDE     |IntelliJ 2018.2 or higher
+|==========================
+
+=== Executing the build
+
+The plugin follows the standard conventions of a Java project modeled with Gradle. Furthermore, the project defines a task for running integration tests. To compile the code, execute all tests and build the plugin's artifact, run the following command.
+
+**Linux & MacOSX**
+
+----
+./gradlew build
+----
+
+**Windows**
+
+----
+gradlew.bat build
+----
+
+=== Working in the IDE
+
+Importing the project into IntelliJ is straight forward. From the menu select _File > Open... > Open as Project_ and point it to the `build.gradle.kts` file. In the following pop-up window, ensure that the default Gradle Wrapper is selected and "Create separate module per source set" is checked.
+
+== Release
+
+The project currently doesn't define a release process that can be triggered by running a single task. Following the process below.
+
+1. Update the release notes and release date in link:./src/docs/asciidoc/50-changes.adoc[changelog file].
+2. Create a release on GitHub with the appropriate tag.
+3. Build and publish the Javadocs and the user guide by running the task `gitPublishPush`.
+4. Check that the https://github.com/gradle/playframework/actions?query=workflow%3A%22Create+Release%22 GitHub action is successful.
+
+=== Generating documentation
+
+The markup language for the user guide of this plugin is AsciiDoc. Documentation sources sit in the directory `src/docs`. To generate the HTML version of the plugin user guide, run the task `asciidoctor`. The generated HTML will be available in the directory `build/asciidoc/html5`.
+
+=== Publishing documentation to GitHub Pages
+
+Documentation (user guide & Javadocs) is hosted on https://pages.github.com/[GitHub Pages]. To publish the documentation to GitHub Pages, execute the task `gitPublishPush`. Make sure to provide the required GitHub token by passing the system property `-Dorg.ajoberstar.grgit.auth.username=$GH_TOKEN`.
+

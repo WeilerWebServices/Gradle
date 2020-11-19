@@ -1,0 +1,19 @@
+plugins {
+    id 'cpp-library'
+    id 'org.gradle.samples.custom-publication' version '1.0'
+}
+
+library {
+    linkage = [Linkage.STATIC]
+    dependencies {
+        api project(":list")
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url "../repo"
+        }
+    }
+}

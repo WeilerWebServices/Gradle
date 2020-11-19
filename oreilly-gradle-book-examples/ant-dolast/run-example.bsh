@@ -1,0 +1,5 @@
+#!/bin/bash
+gradle -b build1.gradle
+gradle -b build2.gradle
+gradle -b build3.gradle
+gradle -b build4.gradle

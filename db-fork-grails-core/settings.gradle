@@ -1,0 +1,50 @@
+rootProject.name = "grails.core.ROOT"
+
+include (
+        'grails-bootstrap',
+        'grails-codecs',
+        'grails-console',
+        'grails-core',
+        'grails-databinding',
+        'grails-docs',
+        'grails-encoder',
+        'grails-logging',
+        'grails-shell',
+        'grails-spring',
+        'grails-test',
+        'grails-web',
+        'grails-web-common',
+        'grails-web-boot',
+        'grails-web-databinding',
+        'grails-web-fileupload',
+        'grails-web-mvc',
+        'grails-web-url-mappings',
+
+        // POM / BOMs
+        'grails-dependencies',
+        'grails-bom',
+
+        // Plugins
+        'grails-plugin-codecs',
+        'grails-plugin-controllers',
+        'grails-plugin-databinding',
+        'grails-plugin-datasource',
+        'grails-plugin-domain-class',
+        'grails-plugin-interceptors',
+        'grails-plugin-i18n',
+        'grails-plugin-mimetypes',
+        'grails-plugin-rest',
+        'grails-plugin-services',
+        'grails-plugin-url-mappings',
+        'grails-plugin-validation',
+
+        // Test Suite
+        'grails-test-suite-base',
+        'grails-test-suite-persistence',
+        'grails-test-suite-uber',
+        'grails-test-suite-web',
+
+        // Gradle Plugin
+        'grails-gradle-plugin',
+        'grails-gradle-model'
+)

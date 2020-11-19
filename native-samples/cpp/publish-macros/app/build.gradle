@@ -1,0 +1,12 @@
+plugins {
+    id "cpp-application"
+    id "org.gradle.samples.cpp-public-macros" version "1.0"
+}
+
+application {
+    binaries.configureEach {
+        dependencies {
+            implementation project(":utilities")
+        }
+    }
+}

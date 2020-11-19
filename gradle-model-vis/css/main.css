@@ -1,0 +1,78 @@
+.controls {
+    width: 300px;
+}
+
+.step {
+    width: 140px;
+}
+
+.description {
+    width: 600px;
+}
+
+.node circle {
+    cursor: pointer;
+}
+
+.link.isHidden {
+    stroke-dasharray: 2.5, 2.5;
+}
+
+.node.isHidden text {
+    font-style: italic;
+    fill: #888;
+}
+
+circle {
+    stroke-width: 1.5px;
+}
+
+.link {
+    stroke: #999;
+    stroke-opacity: .6;
+    fill: none;
+}
+
+text {
+    font-size: 10px;
+    font-family: sans-serif;
+    stroke: none;
+    fill: black;
+}
+
+text.collapsed {
+    font-weight: bold;
+}
+
+.content {
+    position: absolute;
+}
+
+.legend {
+    font-size: 9pt;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.legend td {
+    padding: 2px;
+}
+
+.legend td.count {
+    text-align: right;
+}
+
+.Registered { stroke: #aec7e8; fill: #FBFFFF; }
+.Discovered { stroke: #1f77b4; fill: #E1FAFF; }
+.Created { stroke: #2ca02c; fill: #C5FFC5; }
+.DefaultsApplied { stroke: #ffbb78; fill: #FFFFC5; }
+.Initialized { stroke: #ff7f0e; fill: #FFE574; }
+.Mutated { stroke: #d62728; fill: #FF8D8E; }
+.Finalized { stroke: #e377c2; fill: #FFDDFF; }
+.SelfClosed { stroke: #B2B2B2; fill: #E1E1E1; }
+.GraphClosed { stroke: #7f7f7f; fill: #CCCCCC; }
+
+tr.sumRow {
+    border-top: 1px solid black;
+}

@@ -1,0 +1,23 @@
+FILE: nullability.kt
+    public? final? fun orFourtyTwo(arg: Int?): <implicit> {
+        ^orFourtyTwo when (lval <elvis>: <implicit> = arg#) {
+            !=($subj$, Null(null)) ->  {
+                <elvis>#
+            }
+            else ->  {
+                Int(42)
+            }
+        }
+
+    }
+    public? final? fun bang(arg: Int?): <implicit> {
+        ^bang when (lval <bangbang>: <implicit> = arg#) {
+            !=($subj$, Null(null)) ->  {
+                <bangbang>#
+            }
+            else ->  {
+                throw KotlinNullPointerException#()
+            }
+        }
+
+    }

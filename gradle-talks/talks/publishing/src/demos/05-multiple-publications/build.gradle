@@ -1,0 +1,98 @@
+apply plugin:'java'
+apply plugin:'idea'
+apply plugin:'maven'
+
+apply plugin:'ivy-publish'
+apply plugin:'maven-publish'
+
+group "org.gradle"
+version "1.1"
+
+repositories{
+    mavenCentral()
+}
+
+dependencies{
+    compile 'org.slf4j:slf4j-api:1.7.5'
+
+    testCompile 'junit:junit:4.11'
+}
+
+task apiJar(type: Jar) {
+    baseName "publishing-api"
+    from sourceSets.main.output
+    exclude '**/impl/**'
+}
+
+// Publishing 2.0
+publishing {
+    repositories {
+        ivy {
+            url file("repo/ivy-publish")
+        }
+        maven {
+            url file("repo/maven-publish")
+        }
+    }
+    publications {
+        ivyImpl(IvyPublication) {
+            from components.java
+            organisation "org.gradlesummit"
+            module "publishing-talk"
+            revision "3.1"
+        }
+        ivyApi(IvyPublication) {
+            artifact apiJar
+            module "publishing-api"
+            revision "3"
+        }
+        mavenImpl(MavenPublication) {
+            from components.java
+            groupId "org.gradlesummit"
+            artifactId "publishing-talk"
+            version "3.1"
+        }
+        mavenApi(MavenPublication) {
+            artifact apiJar
+            artifactId "publishing-api"
+            version "3"
+        }
+    }
+}
+
+// Publishing 1.0
+artifacts {
+    archives apiJar
+}
+uploadArchives {
+    repositories {
+        ivy {
+            url file("repo/ivy")
+        }
+
+        mavenDeployer {
+            repository(url: file("repo/maven").toURI())
+
+            addFilter('publishing') { artifact, file ->
+                artifact.name == 'publishing'
+            }
+            pom('publishing').groupId = "org.gradlesummit"
+            pom('publishing').artifactId = "publishing-talk"
+            pom('publishing').version = "3.1"
+
+            addFilter('publishing-api') { artifact, file ->
+                artifact.name == 'publishing-api'
+            }
+            pom('publishing-api').artifactId = "publishing-api"
+            pom('publishing-api').version = "3"
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.groupId = "org.gradlesummit"
+        pom.artifactId = "publishing-talk"
+        pom.version = "3.1"
+    }
+}

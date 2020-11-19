@@ -1,0 +1,90 @@
+dependencies {
+    compileOnly "io.micronaut:micronaut-inject-java:$micronautVersion"
+    compileOnly "io.micronaut:micronaut-inject-groovy:$micronautVersion"
+    compileOnly "io.micronaut.spring:micronaut-spring-annotation:$micronautSpringVersion"
+    annotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
+    annotationProcessor "io.micronaut.spring:micronaut-spring-annotation:$micronautSpringVersion"
+    compile "io.micronaut:micronaut-inject:$micronautVersion"
+    compile "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
+    compile 'javax.persistence:javax.persistence-api:2.2'
+    compile "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
+
+    compile "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
+    compile("org.springframework.boot:spring-boot:$springBootVersion")
+    compile("org.springframework:spring-core:${springVersion}") {
+        exclude group: 'commons-logging', module:'commons-logging'
+    }
+    compile("org.springframework:spring-tx:${springVersion}") {
+        exclude group: 'commons-logging', module:'commons-logging'
+    }
+    compile("org.springframework:spring-beans:${springVersion}") {
+        exclude group: 'commons-logging', module:'commons-logging'
+    }
+    compile("org.springframework:spring-context:${springVersion}") {
+        exclude group: 'commons-logging', module:'commons-logging'
+    }
+
+    compileOnly("org.springframework:spring-test:${springVersion}") {
+        exclude group: 'commons-logging', module:'commons-logging'
+    }
+    compileOnly("org.codehaus.groovy:groovy-templates:$groovyVersion")
+
+
+    compile project(":grails-bootstrap"), {
+        exclude group:"org.fusesource.jansi", module:"jansi"
+        exclude group:"jline", module:"jline"
+        exclude group:"net.java.dev.jna", module:"jna"
+
+        // Ant
+        exclude group:"org.codehaus.groovy", module:"groovy-ant"
+        exclude group:"org.apache.ant", module:"ant"
+        exclude group:"org.apache.ant", module:"ant-launcher"
+        exclude group:"org.apache.ivy", module:"ivy"
+        exclude group:"org.apache.ant", module:"ant-trax"
+        exclude group:"org.apache.ant", module:"ant-junit"
+
+        exclude group:"org.codehaus.gant", module:"gant_groovy1.8"
+    }
+
+    compile project(":grails-spring"), {
+        exclude group:'org.springframework', module:'spring-tx'
+        exclude group:'org.springframework', module:'spring-web'
+        exclude group:'org.grails', module:'grails-bootstrap'
+    }
+
+    compile "org.grails:grails-datastore-core:$datastoreVersion"
+
+    testCompile("org.springframework:spring-jdbc:${springVersion}") {
+        exclude group: 'commons-logging', module:'commons-logging'
+    }
+
+    testRuntime "com.h2database:h2:$h2Version"
+
+    // These dependencies are not required, but due to a Groovy compiler bug they are loaded by Groovy and hence
+    // have to be on the path for compilation even though they shouldn't be
+    provided "org.apache.ant:ant:${antVersion}"
+    provided "jline:jline:$jlineVersion"
+    provided "org.fusesource.jansi:jansi:$jansiVersion"
+
+}
+
+compileGroovy.doFirst {
+    delete("${buildDir}/classes/main/META-INF")
+    sourceSets.main.output.classesDirs.files.each {
+        ant.mkdir(dir:it)
+        ant.propertyfile(file:"${it.path}/grails.build.properties") {
+            entry key:"grails.version", value:version
+        }
+    }
+}
+
+eclipse {
+    classpath {
+       file {
+           whenMerged { classpath ->
+                // don't add global ASTs since the source code is in this project and that causes greclipse compilation to fail
+                classpath.entries.find { entry -> entry.kind == 'src' && entry.path == "src/main/resources" }?.excludes=["META-INF/services/org.codehaus.groovy.transform.ASTTransformation"]
+           }
+       }
+    }
+}

@@ -1,0 +1,35 @@
+plugins {
+    id 'org.gradle.playframework' version '0.10'
+}
+
+repositories {
+    jcenter()
+    maven {
+        name "lightbend-maven-release"
+        url "https://repo.lightbend.com/lightbend/maven-releases"
+    }
+    ivy {
+        name "lightbend-ivy-release"
+        url "https://repo.lightbend.com/lightbend/ivy-releases"
+        layout "ivy"
+    }
+}
+
+dependencies {
+    implementation 'commons-lang:commons-lang:2.6'
+    testImplementation "com.google.guava:guava:17.0"
+}
+
+play {
+    platform {
+        playVersion = '2.4.0'
+        scalaVersion = '2.11'
+        javaVersion = JavaVersion.VERSION_1_8
+    }
+}
+
+// tag::injected-routes-compiler[]
+play {
+    injectedRoutesGenerator = true
+}
+// end::injected-routes-compiler[]

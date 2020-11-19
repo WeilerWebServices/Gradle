@@ -1,0 +1,12 @@
+[background-color="#01303a"]
+== Conclusion
+
+=== Publishing
+
+* Switch to the `maven-publish` or `ivy-plugin`
+* Supports publishing POM/Ivy + Gradle Module Metadata
+* Gradle Module Metadata -> richest
+* Flexible support for custom components
+** already used by 3rd party plugins (Kotlin Native, Android, ...)
+
+

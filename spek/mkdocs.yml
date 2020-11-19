@@ -1,0 +1,64 @@
+site_name: Spek Framework
+
+# Meta tags (placed in header)
+site_description: Spektakular test framework for Kotlin.
+site_author: Spek Team
+site_url: https://spekframework.org
+
+# Repository (add link to repository on each page)
+repo_name: Spek Framework
+repo_url: https://github.com/spekframework/spek
+edit_uri: edit/2.x/docs
+
+#Copyright (shown at the footer)
+copyright: 'Copyright &copy; 2018 Spek Team'
+
+# Meterial theme
+theme:
+  name: 'material'
+  logo:
+    icon: 'code'
+  palette:
+    primary: 'teal'
+    accent: 'cyan'
+  social:
+    - type: 'github'
+      link: 'https://github.com/spekframework'
+  font:
+    text: 'Fira Sans'
+    code: 'Fira Mono'
+
+
+# Google Analytics
+#google_analytics:
+#  - 'UA-111111111-1'
+#  - 'auto'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+
+pages:
+  - Overview: index.md
+  - Breaking changes: breaking-changes.md
+  - Migrating to 2.x: migration.md
+  - Setting up:
+    - JVM: setup-jvm.md
+    - Android: setup-android.md
+  - Core Concepts: core-concepts.md
+  - Running tests: running.md
+  - Styles:
+    - Specification: specification.md
+    - Gherkin: gherkin.md

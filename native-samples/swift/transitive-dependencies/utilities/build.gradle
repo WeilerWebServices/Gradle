@@ -1,0 +1,10 @@
+plugins {
+    id 'swift-library'
+    id 'xctest'
+}
+
+library {
+    dependencies {
+        api project(':list')
+    }
+}

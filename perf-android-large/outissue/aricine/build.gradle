@@ -1,0 +1,7 @@
+apply plugin: 'com.android.library'
+dependencies {
+    compile deps.support.annotations
+    compile deps.other.googleMap
+
+    testCompile project(':outissue:cyclus')
+}

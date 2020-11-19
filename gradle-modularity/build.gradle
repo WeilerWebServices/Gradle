@@ -1,0 +1,7 @@
+apply from: 'jdk.gradle'
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+}

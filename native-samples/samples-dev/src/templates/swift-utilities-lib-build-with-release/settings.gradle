@@ -1,0 +1,10 @@
+rootProject.name = 'utilities'
+
+sourceControl {
+    gitRepository("../release-plugin") {
+        producesModule("org.gradle.samples:release")
+    }
+    gitRepository("../list-library") {
+        producesModule("org.gradle.swift-samples:list")
+    }
+}

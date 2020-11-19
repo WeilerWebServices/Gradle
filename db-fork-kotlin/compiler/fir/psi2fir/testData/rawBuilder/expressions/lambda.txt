@@ -1,0 +1,83 @@
+FILE: lambda.kt
+    public? final? data class Tuple : kotlin/Any {
+        public? constructor(x: Int, y: Int): super<kotlin/Any>()
+
+        public? final? val x: Int
+            public? get(): Int
+
+        public? final? val y: Int
+            public? get(): Int
+
+    }
+    public? final? inline fun use(f: ( (Tuple) -> Int )): <implicit> {
+        ^use f#(Tuple#(Int(1), Int(2)))
+    }
+    public? final? fun foo(): Int {
+        lval l1: <implicit> = fun <implicit>.<anonymous>(t: Tuple): <implicit> {
+            ^  {
+                lval x: <implicit> = t#.x#
+                lval y: <implicit> = t#.y#
+                plus#(x#, y#)
+            }
+
+        }
+
+        use#(use@fun <implicit>.<anonymous>(<destruct>: <implicit>): <implicit> {
+            ^  {
+                lval x: <implicit> = component1(<destruct>#)
+                lval y: <implicit> = component2(<destruct>#)
+                plus#(x#, y#)
+            }
+
+        }
+        )
+        ^foo use#(use@fun <implicit>.<anonymous>(): <implicit> {
+            ^  {
+                when () {
+                    ==(it#.x#, Int(0)) ->  {
+                        ^foo Int(0)
+                    }
+                    else ->  {
+                    }
+                }
+
+                ^@use it#.y#
+            }
+
+        }
+        )
+    }
+    public? final? fun bar(): Int {
+        ^bar use#(lambda@fun <implicit>.<anonymous>(): <implicit> {
+            ^  {
+                when () {
+                    ==(it#.x#, Int(0)) ->  {
+                        ^bar Int(0)
+                    }
+                    else ->  {
+                    }
+                }
+
+                ^@lambda it#.y#
+            }
+
+        }
+        )
+    }
+    public? final? fun test(list: List<Int>): kotlin/Unit {
+        lval map: <implicit> = mutableMapOf#<Int, String>()
+        list#.forEach#(forEach@fun <implicit>.<anonymous>(): <implicit> {
+            ^  {
+                lval <complex-set>: <implicit> = map#.getOrPut#(it#, getOrPut@fun <implicit>.<anonymous>(): <implicit> {
+                    ^  {
+                        mutableListOf#()
+                    }
+
+                }
+                )
+                <complex-set># += String()
+            }
+
+        }
+        )
+    }

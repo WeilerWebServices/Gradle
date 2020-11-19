@@ -1,0 +1,5 @@
+fun foo(): Int {
+    return 1
+}
+
+foo()               // RESULT: res1: kotlin.Int = 1

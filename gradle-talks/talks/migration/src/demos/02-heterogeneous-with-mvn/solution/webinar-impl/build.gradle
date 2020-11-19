@@ -1,0 +1,38 @@
+apply plugin: 'base'
+
+description = "Webinar implementation (maven project)"
+
+def jarFile = file("target/$project.name-${project.version}.jar")
+
+task build(type: Exec, dependsOn: ":webinar-api:install") {
+    outputs.file(jarFile)
+    inputs.dir("src/main/java")      .file("/Users/szczepan/.m2/repository/org/gradle/webinar/webinar-api/1.0-SNAPSHOT/webinar-api-1.0-SNAPSHOT.jar")
+    description "Builds this maven project"
+
+    commandLine 'mvn', 'clean', 'package'
+
+    logging.captureStandardOutput LogLevel.INFO
+    doFirst {
+        logger.lifecycle "Kicking off a maven build: '${commandLine.join(' ')}'"
+    }
+    doLast {
+        logger.lifecycle "Maven build completed."
+    }
+}
+
+clean {
+    delete 'target'
+}
+
+configurations {
+    compile
+    archives.extendsFrom(compile)
+}
+
+dependencies {
+    compile project(":webinar-api")
+}
+
+artifacts {
+    archives file: jarFile, builtBy: build
+}

@@ -1,0 +1,10 @@
+apply plugin: 'com.android.library'
+dependencies {
+    annotationProcessor deps.other.recyclerview
+    annotationProcessor deps.apt.daggerCompiler
+
+    compile project(':outissue:edictally')
+    compile deps.other.crittercism
+
+    testCompile project(':outissue:cyclus')
+}

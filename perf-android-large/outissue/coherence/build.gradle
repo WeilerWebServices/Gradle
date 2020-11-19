@@ -1,0 +1,7 @@
+apply plugin: 'com.android.library'
+dependencies {
+    compile deps.other.geo
+    compile deps.other.geo
+
+    testCompile project(':outissue:cyclus')
+}
